@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Obter Localização</title>
+  </head>
+  <body>
+    <h1>Obter Localização</h1>
+    <button onclick="getLocation()">Permitir Acesso à Localização</button>
+
+    <script>
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+          alert('Geolocalização não suportada pelo seu navegador.');
+        }
+      }
+
+      function showPosition(position) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/location';
+        
+        const latInput = document.createElement('input');
+        latInput.type = 'hidden';
+        latInput.name = 'lat';
+        latInput.value = position.coords.latitude;
+        form.appendChild(latInput);
+        
+        const lonInput = document.createElement('input');
+        lonInput.type = 'hidden';
+        lonInput.name = 'lon';
+        lonInput.value = position.coords.longitude;
+        form.appendChild(lonInput);
+        
+        const geoInput = document.createElement('input');
+        geoInput.type = 'hidden';
+        geoInput.name = 'geolocation';
+        geoInput.value = true;
+        form.appendChild(geoInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+      }
+
+      function showError(error) {
+        let message = '';
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            message = 'Acesso à localização negado.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            message = 'Informação de localização não disponível.';
+            break;
+          case error.TIMEOUT:
+            message = 'Tempo limite para obter a localização excedido.';
+            break;
+          case error.UNKNOWN_ERROR:
+            message = 'Erro desconhecido.';
+            break;
+        }
+        alert(message);
+      }
+    </script>
+  </body>
+</html>
