@@ -27,3 +27,11 @@ O objetivo deste sistema é facilitar o processo de registro de presença dos al
 ## Conclusão
 
 Este documento descreve os requisitos para um Sistema de Lista de Presença em Aulas baseado na localização do aluno e utilizando um QR Code gerado pelo professor. O sistema deve ser fácil de usar, seguro e capaz de lidar com grandes quantidades de alunos. Esperamos que este sistema facilite o processo de registro de presença dos alunos nas aulas e melhore a eficiência do processo para professores e alunos.
+
+## Instruções para Executar o Projeto
+- Instale o Python 3.x em seu computador, caso ainda não tenha instalado.
+- Clone o repositório do projeto em sua máquina: git clone https://github.com/seu-usuario/projeto-flask-python.git
+- Crie e ative um ambiente virtual para o projeto: python -m venv venv e source venv/bin/activate (Linux/Mac) ou venv\Scripts\activate (Windows)
+- Instale as dependências do projeto: pip install -r requirements.txt
+- Execute o projeto: flask run
+- Acesse a aplicação em seu navegador através do endereço http://localhost:5000
