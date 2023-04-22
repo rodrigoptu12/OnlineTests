@@ -37,7 +37,7 @@ app.secret_key = 'secret'
 def index():
     if ("user" in session):
         print(session['user'])
-        return "Hi, {}".format(session['user']['email'])
+        return render_template('home.html', email=session['user']['email'])
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
@@ -47,15 +47,14 @@ def index():
             return redirect('/')
         except:
             return "Invalid email or password"
-    return render_template('home.html')
+    return render_template('login.html')
 
 
 # criar conta
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if ("user" in session):
-        print(session['user'])
-        return "Hi, {}".format(session['user']['email'])
+        return render_template('home.html', email=session['user']['email'])
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']

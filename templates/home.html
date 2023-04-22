@@ -36,17 +36,9 @@
   </head>
   <body>
     <div class="box">
-      <h1>Welcome</h1>
-      <p>Please log in to continue</p>
-      <form action="/" method="POST">
-        Email: <input type="text" name="email" /><br />
-        Password: <input type="password" name="password" /><br />
-        <input type="submit" value="Login" />
-        <!-- Criar conta -->
-        <a href="/signup" class="button">Create Account</a>
-      </form>
-      <!-- <a href="#" class="button">Log in</a>
-        <form action=""></form> -->
+        <img src="https://robohash.org/{{email}}">
+        <h1>Welcome</h1>
+        <a href="/logout" class="button">Logout</a>
     </div>
   </body>
 </html>
