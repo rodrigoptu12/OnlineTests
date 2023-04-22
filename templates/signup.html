@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Presença</title>
+    <style>
+      /* Center the box horizontally and vertically */
+      .box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 300px;
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      /* Style the login button */
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #0b89c8;
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 50px;
+      }
+
+      /* Hover effect for the login button */
+      .button:hover {
+        background-color: #0b78ae;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <h1>Welcome</h1>
+      <p>Please log in to continue</p>
+      <form action="/signup" method="POST">
+        Email: <input type="text" name="email" /><br />
+        Password: <input type="password" name="password" /><br />
+        <input type="submit" value="Create Account" />
+      </form>
+    </div>
+  </body>
+</html>
