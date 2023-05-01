@@ -1,3 +1,4 @@
 flask
 pyrebase4
 python-dotenv
+Flask-SQLAlchemy
