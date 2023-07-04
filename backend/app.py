@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, redirect, session, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from controllers.question_controller import QuestionController
 from dotenv import load_dotenv
-from models import db, Question, Item
+from models import db
 import pyrebase
 import os
 
