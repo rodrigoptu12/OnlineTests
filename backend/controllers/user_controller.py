@@ -5,10 +5,6 @@ from models.user import User
 from models import db
 from flask import Blueprint
 
-#Criar o resto do CRUD e testar
-#Depois de finalizar, voltar e vê se consigo deixar o isTeacher apenas para o servidor alterar e definir
-#Testar o flake8 para deixar o código com um padrão ? (Pesquisar oq é isso)
-
 user_bp = Blueprint('user', __name__)
 
 class UserController(Resource):
