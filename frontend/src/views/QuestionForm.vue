@@ -8,14 +8,16 @@ import Navbar from '../components/Navbar.vue';
     <Navbar id="navbar"/>
     <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3 mb-6 md:mb-0">
-              <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">Nova Questão.</h1>
-  <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Área de criação de questões.</p>
+              <h1 class="mb-1 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">Nova Questão.</h1>
+  <p class="text-lg font-normal text-gray-500 lg:text-l dark:text-gray-400 mb-4">Área de criação de questões.</p>
+  <hr/>
+
 </div>
 </div>
     <div>
       <form class="w-full max-w-lg">
         <div class="flex flex-wrap -mx-3 mb-6">
-          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <div class="w-full px-3 mb-6 md:mb-0">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-command"
@@ -28,10 +30,9 @@ import Navbar from '../components/Navbar.vue';
               type="text"
               placeholder="Command here..."
             />
-            <p class="text-red-500 text-xs italic">Por favor, preencha este campo.</p>
+            <!--<p class="text-red-500 text-xs italic">Por favor, preencha este campo.</p>-->
           </div>
-
-          <div class="w-full md:w-1/2 px-3">
+          <div class="w-full px-3">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-answer-key"
