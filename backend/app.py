@@ -11,6 +11,10 @@ load_dotenv()
 
 app = Flask(__name__)
 
+@app.before_request
+def reset_session():
+    session.pop('user_id', None)
+
 api = Api(app)  # 'app' é a sua instância do aplicativo Flask
 api.add_resource(QuestionController, '/questions')
 app.register_blueprint(user_bp)
