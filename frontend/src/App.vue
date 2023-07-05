@@ -8,7 +8,7 @@ import OnlineTestesLogo from './components/images/OnlineTestesLogo.vue'
 <template>
   <header v-if="idHomeViewRoute">
     <!--<img alt="Online tests logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
-    <OnlineTestesLogo alt="Online tests logo" class="logo" width="125" height="125"/>
+    <OnlineTestesLogo alt="Online tests logo" class="logo" width="125" height="125" />
 
     <div class="wrapper">
       <HelloWorldOnlineTestes msg="Online Testes" />

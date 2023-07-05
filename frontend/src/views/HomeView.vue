@@ -22,10 +22,17 @@ import BgSession from '../components/BgSession.vue'
   }
 }
 
-@media screen and (min-width:320px) { } @media screen and (min-width:480px) { } @media screen and (min-width:600px) { } @media screen and (min-width:768px) { } @media screen and (min-width:992px) { 
+@media screen and (min-width: 320px) {
+}
+@media screen and (min-width: 480px) {
+}
+@media screen and (min-width: 600px) {
+}
+@media screen and (min-width: 768px) {
+}
+@media screen and (min-width: 992px) {
   #bg {
     visibility: visible;
   }
-} 
-
+}
 </style>

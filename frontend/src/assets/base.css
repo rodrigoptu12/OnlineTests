@@ -35,7 +35,7 @@
 
   --section-gap: 160px;
 
-  --color-primary: #0085FF;
+  --color-primary: #0085ff;
   --color-secondary: white;
 
   --color-text-headline: #000000;
@@ -57,9 +57,9 @@
     --color-text: var(--vt-c-text-dark-2);
 
     --color-primary: white;
-    --color-secondary: #0085FF;
+    --color-secondary: #0085ff;
 
-    --color-text-headline: #0085FF;
+    --color-text-headline: #0085ff;
     --color-navbar-background: white;
 
     --color-logo-primary: white;
