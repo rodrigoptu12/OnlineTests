@@ -1,82 +1,58 @@
 <script setup>
-import Navbar from '../components/Navbar.vue';
+  import Navbar from '../components/Navbar.vue';
 </script>
 
 <template>
 
   <main id="wrapper">
-    <Navbar id="navbar"/>
-    <div class="flex flex-wrap -mx-3 mb-6">
-          <div class="w-full px-3 mb-6 md:mb-0">
-              <h1 class="mb-1 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">Nova Questão.</h1>
-  <p class="text-lg font-normal text-gray-500 lg:text-l dark:text-gray-400 mb-4">Área de criação de questões.</p>
-  <hr/>
+    <Navbar id="navbar" />
+    <div class="wrapper-headline flex flex-wrap -mx-3 mb-6">
+      <div class="w-full px-3 mb-6 md:mb-0">
+        <h1 class="mb-1 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">Nova Questão.
+        </h1>
+        <p class="text-lg font-normal text-gray-500 lg:text-l dark:text-gray-400 mb-4">Área de criação de questões.</p>
+        <hr />
 
-</div>
-</div>
+      </div>
+    </div>
     <div>
       <form class="w-full max-w-lg">
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-command"
-            >
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-command">
               Comando da questão
             </label>
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              id="grid-command"
-              type="text"
-              placeholder="Command here..."
-            />
+              id="grid-command" type="text" placeholder="Command here..." />
             <!--<p class="text-red-500 text-xs italic">Por favor, preencha este campo.</p>-->
           </div>
           <div class="w-full px-3">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-answer-key"
-            >
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-answer-key">
               Chave da resposta
             </label>
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-answer-key"
-              type="text"
-              placeholder="Answer key here..."
-            />
+              id="grid-answer-key" type="text" placeholder="Answer key here..." />
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-8">
           <div class="w-full px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-question-type"
-            >
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-question-type">
               Tipo da questão
             </label>
             <div class="relative">
-              <select
-                v-model="selectedTipo" @change="onChangeTipo"
+              <select v-model="selectedTipo" @change="onChangeTipo"
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-question-type"
-              >
+                id="grid-question-type">
                 <option disabled default>Selecione uma das opções...</option>
                 <option value="m_e">Múltipla escolha</option>
                 <option value="r_t_v_n">Com resposta to tipo valor numérico</option>
                 <option value="v_f">Verdadeiro ou falso</option>
               </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-              >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                 </svg>
               </div>
             </div>
@@ -85,90 +61,89 @@ import Navbar from '../components/Navbar.vue';
 
         <div class="flex flex-wrap -mx-3 mb-6">
           <div v-if="selectedTipo === 'm_e'" class="w-full px-3">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-items-text"
-            >
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-items-text">
               Texto do item
             </label>
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-items-text"
-              type="text"
-              placeholder="Item text here..."
-              v-model="gridItemsText"
-            />
+              id="grid-items-text" type="text" placeholder="Item text here..." v-model="gridItemsText" />
           </div>
-        </div> 
-        
+        </div>
+
         <div class="flex flex-wrap -mx-3 mb-6">
           <div v-if="selectedTipo === 'm_e'" class="w-full px-3">
 
-            <button type="button" @click="adicionarCampo" class="flex-shrink-0 mb-6 border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded">Adicionar texto de item</button>
+            <button type="button" @click="adicionarCampo"
+              class="flex-shrink-0 mb-6 border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded">Adicionar
+              texto de item</button>
             <div v-for="(campo, index) in camposExtras" :key="index">
-              <label :for="'campoExtra' + index" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              >Texto do item {{ index + 1 }}</label>
+              <label :for="'campoExtra' + index"
+                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Texto do item
+                {{ index + 1 }}</label>
               <input :type="campo.tipo" :value="campo.valor" :id="'campoExtra' + index"
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              placeholder="Item text here..."
-              v-model="gridItemsText"
-              >
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                placeholder="Item text here..." v-model="gridItemsText">
 
               <button @click="removerCampo(index)">Remover</button>
 
             </div>
           </div>
-        </div> 
+        </div>
       </form>
     </div>
   </main>
 </template>
 
 <style scoped>
-#wrapper {
-  display: flex;
-  place-items: flex-start;
-  flex-wrap: wrap;
-  flex-direction: column;
-}
+  #wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
 
-#navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-}
+  #navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+  }
+
+  .wrapper-headline {
+    margin-top: calc(60px + 4rem);
+  }
 </style>
 
 
 
 <script>
-export default {
-  data() {
-    return {
-      selectedTipo: '',
-      gridItemsText: '',
-      campo2: '',
-      campo3: '',
-      camposExtras: [],
-    };
-  },
-  methods: {
-    onChangeTipo() {
-      // Limpar campos extras quando o tipo é alterado
-      this.camposExtras = [];
+  export default {
+    data() {
+      return {
+        selectedTipo: '',
+        gridItemsText: '',
+        campo2: '',
+        campo3: '',
+        camposExtras: [],
+      };
     },
-    adicionarCampo() {
-      // Adicionar um novo campo extra
-      this.camposExtras.push({ tipo: 'text', valor: '' });
+    methods: {
+      onChangeTipo() {
+        // Limpar campos extras quando o tipo é alterado
+        this.camposExtras = [];
+      },
+      adicionarCampo() {
+        // Adicionar um novo campo extra
+        this.camposExtras.push({
+          tipo: 'text',
+          valor: ''
+        });
+      },
+      removerCampo(index) {
+        // Remover o campo extra com o índice especificado
+        this.camposExtras.splice(index, 1);
+      },
     },
-    removerCampo(index) {
-      // Remover o campo extra com o índice especificado
-      this.camposExtras.splice(index, 1);
-    },
-  },
-};
+  };
 </script>
-
-
