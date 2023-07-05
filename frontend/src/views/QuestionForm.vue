@@ -66,7 +66,7 @@ import Navbar from '../components/Navbar.vue'
                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-question-type"
               >
-                <option disabled default>Selecione uma das opções...</option>
+                <option value="" disabled selected hidden>Selecione uma opção...</option>
                 <option value="m_e">Múltipla escolha</option>
                 <option value="r_t_v_n">Com resposta to tipo valor numérico</option>
                 <option value="v_f">Verdadeiro ou falso</option>
@@ -158,6 +158,11 @@ import Navbar from '../components/Navbar.vue'
 .wrapper-headline {
   margin-top: calc(60px + 4rem);
 }
+.select-placeholder {
+  color: #999999;
+  font-style: italic;
+}
+
 </style>
 
 <script>
@@ -186,7 +191,13 @@ export default {
     removerCampo(index) {
       // Remover o campo extra com o índice especificado
       this.camposExtras.splice(index, 1)
+    },
+    handleChange() {
+
     }
   }
 }
+
+
+
 </script>
