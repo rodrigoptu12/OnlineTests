@@ -87,7 +87,6 @@ class UserController(Resource):
         new_email = data.get('new_email')
         password = data.get('password')
         new_password = data.get('new_password')
-        registration = data.get('registration')
 
         if not name:
             return jsonify({'error': 'Name is required'}), 400
