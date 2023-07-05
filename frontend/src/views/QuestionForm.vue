@@ -162,7 +162,6 @@ import Navbar from '../components/Navbar.vue'
   color: #999999;
   font-style: italic;
 }
-
 </style>
 
 <script>
@@ -192,12 +191,7 @@ export default {
       // Remover o campo extra com o índice especificado
       this.camposExtras.splice(index, 1)
     },
-    handleChange() {
-
-    }
+    handleChange() {}
   }
 }
-
-
-
 </script>
