@@ -1,6 +1,6 @@
 from flask import request, jsonify, session
 from flask_restful import Resource
-from backend.decorators.decorators import require_login
+from decorators.decorators import require_login
 from models.user import User
 from models import db
 from flask import Blueprint
@@ -13,22 +13,24 @@ user_bp = Blueprint('user', __name__)
 
 class UserController(Resource):
     @staticmethod
-    @require_login
     @user_bp.route('/users', methods=['GET'])
+    @require_login
     def get_all_users():
+        if session.get('user_id') is None:
+            return jsonify({'error': 'Login require'}), 404
         user_session = User.query.get(session.get('user_id'))
-        if not user_session.is_teacher == True:
+        if user_session is None or not user_session.is_teacher == True:
             return jsonify({'error': 'User without permition'}), 404
         users = User.query.all()
         return jsonify([user.serialize() for user in users])
     
     @staticmethod
-    @require_login
     @user_bp.route('/users/<int:user_id>', methods=['GET'])    
+    @require_login
     def get_user(user_id):
         user = User.query.get(user_id)
         user_session_id = session.get('user_id')
-        if not user.user_id == user_session_id:
+        if not user.userId == user_session_id:
             return jsonify({'error': 'User without permition'}), 404
         if not user:
             return jsonify({'error': 'User not found'}), 404
@@ -76,8 +78,8 @@ class UserController(Resource):
         return jsonify(user.serialize()), 201
 
     @staticmethod
-    @require_login
     @user_bp.route('/users/<int:user_id>', methods=['PUT'])
+    @require_login
     def update_user(user_id):
         user = User.query.get(user_id)
         if not user:
@@ -86,6 +88,7 @@ class UserController(Resource):
         data = request.json
         name = data.get('name')
         email = data.get('email')
+        new_email = data.get('new_email')
         password = data.get('password')
         new_password = data.get('new_password')
         registration = data.get('registration')
@@ -99,38 +102,34 @@ class UserController(Resource):
         if not password:
             return jsonify({'error': 'Password is required'}), 400
         
-        if not (User.query.filter_by(email=email).first() is None):
-            return jsonify({'error': 'Email already registered'}), 400
-        
-        if not (User.query.filter_by(registration=registration).first() is None):
-            return jsonify({'error': 'Registration already registered'}), 400
+        if User.query.filter_by(email=email).first() is None:
+            return jsonify({'error': 'Email doesnt exist'}), 400
         
         if not user.verify_password(password):
-            return jsonify({'error': 'Wrong passwod'}), 400
+            return jsonify({'error': 'Wrong password'}), 400
         
         user.name = name
-        user.email = email
+
+        if new_email:
+            user.email = new_email
 
         if new_password:
-            user.password(new_password)
-          
-        if registration:
-            user.registration = registration
+            user.password = new_password
           
         db.session.commit()
 
         return jsonify(user.serialize())
 
     @staticmethod
-    @require_login
     @user_bp.route('/users/<int:user_id>', methods=['DELETE'])
+    @require_login
     def delete_user(user_id):
         user = User.query.get(user_id)
         user_session = session.get('user_id')
         if not user:
             return jsonify({'error': 'User not found'}), 404
         
-        if not user.is_teacher == True and not user.user_id == user_session :
+        if not user.is_teacher == True and not user.userId == user_session :
             return jsonify({'message': 'User without permition'})
 
         db.session.delete(user)
@@ -162,15 +161,15 @@ class UserController(Resource):
         return jsonify({'message': 'Login successful'})
 
     @staticmethod
-    @require_login
     @user_bp.route('/logout', methods=['POST'])
+    @require_login
     def logout():
         session.pop('user_id', None)
         return jsonify({'message': 'Logged out'})
 
     @staticmethod
-    @require_login
     @user_bp.route('/me', methods=['GET'])
+    @require_login
     def get_current_user():
         user_id = session.get('user_id')
         if user_id:
@@ -179,3 +178,4 @@ class UserController(Resource):
                 return jsonify(user.serialize())
         
         return jsonify({'error': 'Not logged in'}), 401
+    
