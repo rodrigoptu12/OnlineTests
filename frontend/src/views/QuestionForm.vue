@@ -29,7 +29,7 @@ import Navbar from '../components/Navbar.vue'
               Comando da questão
             </label>
             <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              class="appearance-none block w-full bg-transparent text-grey border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
               id="grid-command"
               type="text"
               placeholder="Command here..."
@@ -44,7 +44,7 @@ import Navbar from '../components/Navbar.vue'
               Chave da resposta
             </label>
             <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
               id="grid-answer-key"
               type="text"
               placeholder="Answer key here..."
@@ -63,7 +63,7 @@ import Navbar from '../components/Navbar.vue'
               <select
                 v-model="selectedTipo"
                 @change="onChangeTipo"
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="block appearance-none w-full bg-transparent border border-gray-200 text-grey py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
                 id="grid-question-type"
               >
                 <option value="" disabled selected hidden>Selecione uma opção...</option>
@@ -72,7 +72,7 @@ import Navbar from '../components/Navbar.vue'
                 <option value="v_f">Verdadeiro ou falso</option>
               </select>
               <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                class="pointer-events-none absolute inset-y-0 right-0 flex items-center mt-3 px-2 text-gray-700"
               >
                 <svg
                   class="fill-current h-4 w-4"
@@ -97,7 +97,7 @@ import Navbar from '../components/Navbar.vue'
               Texto do item
             </label>
             <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
               id="grid-items-text"
               type="text"
               placeholder="Item text here..."
@@ -111,7 +111,7 @@ import Navbar from '../components/Navbar.vue'
             <button
               type="button"
               @click="adicionarCampo"
-              class="flex-shrink-0 mb-6 border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded"
+              class="bg-grey mb-6 text-white outline-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none"
             >
               Adicionar texto de item
             </button>
@@ -121,18 +121,24 @@ import Navbar from '../components/Navbar.vue'
                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 >Texto do item {{ index + 1 }}</label
               >
+              <div class="flex">
               <input
                 :type="campo.tipo"
                 :value="campo.valor"
                 :id="'campoExtra' + index"
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
                 placeholder="Item text here..."
                 v-model="gridItemsText"
               />
-
-              <button @click="removerCampo(index)">Remover</button>
+              <button @click="removerCampo(index)" class=" ml-6 pb-3 outline-none text-grey">Remover</button>
+            </div>
             </div>
           </div>
+        </div>
+        <div class="class">
+          <button type="button" class="bg-blue text-white outline-none border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue">
+            Cadastrar questão
+          </button>
         </div>
       </form>
     </div>
