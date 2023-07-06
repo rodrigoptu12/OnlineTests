@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, jsonify
 from flask_restful import Api
 from controllers.question_controller import QuestionController
+from controllers.user_controller import user_bp
 from dotenv import load_dotenv
 from models import db
 import pyrebase
@@ -10,10 +11,15 @@ load_dotenv()
 
 app = Flask(__name__)
 
+@app.before_request
+def reset_session():
+    session.pop('user_id', None)
+
 api = Api(app)  # 'app' é a sua instância do aplicativo Flask
 api.add_resource(QuestionController, '/questions')
+app.register_blueprint(user_bp)
 app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'postgresql://rodrigoptu12:123456@localhost/attendancelist'
+    'SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
