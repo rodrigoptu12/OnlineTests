@@ -18,9 +18,14 @@ const router = createRouter({
       component: () => import('../views/Sign-in.vue')
     },
     {
-      path: '/question_form',
+      path: '/new-question',
       name: 'questionform',
       component: () => import('../views/QuestionForm.vue')
+    },
+    {
+      path: '/new-exam',
+      name: 'examform',
+      component: () => import('../views/ExamForm.vue')
     }
   ]
 })
