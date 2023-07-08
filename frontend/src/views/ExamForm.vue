@@ -24,7 +24,7 @@
               Título do exame
             </label>
             <input
-              required class="appearance-none block w-full bg-transparent text-grey border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
+              required class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
               id="grid-command" type="text" placeholder="Digite aqui o título do exame..." />
           </div>
         </div>
