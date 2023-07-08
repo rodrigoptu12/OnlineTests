@@ -12,9 +12,11 @@ class QuestionController(Resource):
         data = request.get_json()
 
         # cria uma nova questão com os dados recebidos
-        new_question = Question(command=data['command'],
-                                answer_key=data['answer_key'],
-                                question_type=data['question_type'])
+        new_question = Question(
+            command=data['command'],
+            answer_key=data['answer_key'],
+            question_type=data['question_type'],
+        )
         # adiciona a nova questão na sessão do banco de dados
         db.session.add(new_question)
         db.session.commit()
@@ -57,6 +59,8 @@ class QuestionController(Resource):
                 question.answer_key,
                 'question_type':
                 question.question_type,
+                'exame_id':
+                question.exame_id,
                 'items': [{
                     'id': item.id,
                     'text': item.text
