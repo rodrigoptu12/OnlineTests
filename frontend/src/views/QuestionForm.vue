@@ -15,7 +15,6 @@ import Navbar from '../components/Navbar.vue'
         <p class="text-lg font-normal text-gray-500 lg:text-l dark:text-gray-400 mb-4">
           Área de criação de questões.
         </p>
-        <hr />
       </div>
     </div>
     <div>
