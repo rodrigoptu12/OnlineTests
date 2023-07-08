@@ -1,5 +1,6 @@
 <script setup>
-import Navbar from '../components/Navbar.vue'
+  import Navbar from '../components/Navbar.vue'
+  import draggable from "vuedraggable";
 </script>
 
 <template>
@@ -7,186 +8,184 @@ import Navbar from '../components/Navbar.vue'
     <Navbar id="navbar" />
     <div class="wrapper-headline flex flex-wrap -mx-3 mb-6">
       <div class="w-full px-3 mb-6 md:mb-0">
-        <h1
-          class="mb-1 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"
-        >
+        <h1 class="mb-1 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
           Novo exame.
         </h1>
         <p class="text-lg font-normal text-gray-500 lg:text-l dark:text-gray-400 mb-4">
           Área de criação de exames.
         </p>
-        <hr />
       </div>
     </div>
     <div class="w-full">
       <form class="w-full max-w-lg">
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-command"
-            >
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-command">
               Título do exame
             </label>
             <input
-              class="appearance-none block w-full bg-transparent text-grey border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
-              id="grid-command"
-              type="text"
-              placeholder="Command here..."
-            />
+              required class="appearance-none block w-full bg-transparent text-grey border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
+              id="grid-command" type="text" placeholder="Digite aqui o título do exame..." />
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-8">
           <div class="w-full px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-question-type"
-            >
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-question-type">
               Lista de questões
             </label>
             <div class="relative">
-              <select
-                v-model="selectedTipo"
-                @change="onChangeTipo"
-                class="block appearance-none w-full bg-transparent border border-gray-200 text-grey py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
-                id="grid-question-type"
-              >
-                <option value="" disabled selected hidden>Selecione uma questão...</option>
-                <option value="q1">Questão 1</option>
-                <option value="q2">Questão 2</option>
-                <option value="q3">Questão 3</option>
-                <option value="q4">Questão 4</option>
-                <option value="q5">Questão 5</option>
-                <option value="q6">Questão 6</option>
-              </select>
-              <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center mt-3 px-2 text-gray-700"
-              >
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                  />
-                </svg>
+              <div class="mb-6">
+                <select required v-model="selectedQuestion" ref="selectedQuestion"
+                  class="block appearance-none w-full bg-transparent border border-gray-200 text-grey py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
+                  id="grid-question-type">
+                  <option value="" disabled selected hidden>Selecione uma questão...</option>
+                  <option value="Questão 1">Questão 1</option>
+                  <option value="Questão 2">Questão 2</option>
+                  <option value="Questão 3">Questão 3</option>
+                  <option value="Questão 4">Questão 4</option>
+                  <option value="Questão 5">Questão 5</option>
+                  <option value="Questão 6">Questão 6</option>
+                </select>
+                <!--<div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center mt-3 mb-6 px-2 text-gray-700">
+                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>-->
               </div>
+
+              <div class="form-group mt-8">
+                <a class="bg-grey mb-6 text-white outline-none  w-1/3 border border-gray-200 rounded py-3 px-4 focus:outline-none"
+                  @click="incluirQuestao">Incluir questão</a>
+                <!--<button class="btn btn-secondary" @click="replace">Replace</button>-->
+
+                <div class="form-check mt-6">
+                  <input id="disabled" type="checkbox" v-model="enabled" class="form-check-input" />
+                  <label class="form-check-label" for="disabled">Ativar ordenação de questões</label>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
 
-        <div class="flex flex-wrap -mx-3 mb-6">
-          <div v-if="selectedTipo === 'q1'" class="w-full px-3">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-items-text"
-            >
-              Texto do item
-            </label>
-            <input
-              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
-              id="grid-items-text"
-              type="text"
-              placeholder="Item text here..."
-              v-model="gridItemsText"
-            />
+        <div class="mt-6">
+
+
+          <div class="flex mt-6 mb-6">
+            <h3>{{ draggingInfo }}</h3>
+
+            <draggable :list="list" :disabled="!enabled" item-key="id" class="list-group" ghost-class="ghost"
+              :move="checkMove" @start="dragging = true" @end="dragging = false">
+              <template #item="{ element }">
+
+
+                <ul class="space-y-4 text-left text-gray-500 dark:text-gray-400">
+                  <li class="flex items-center space-x-3">
+                    <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 5.917 5.724 10.5 15 1.5" />
+                    </svg>
+                    <span class="list-group-item" :class="{ 'not-draggable': !enabled }">{{ element.name }}</span>
+                  </li>
+                </ul>
+
+              </template>
+            </draggable>
+
           </div>
+
+          <rawDisplayer class="bg-red" :value="list" title="List" />
         </div>
 
-        <div class="flex flex-wrap -mx-3 mb-6">
-          <div v-if="selectedTipo === 'm_e'" class="w-full px-3">
-            <button
-              type="button"
-              @click="adicionarCampo"
-              class="bg-grey mb-6 text-white outline-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none"
-            >
-              Adicionar texto de item
-            </button>
-            <div v-for="(campo, index) in camposExtras" :key="index">
-              <label
-                :for="'campoExtra' + index"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >Texto do item {{ index + 1 }}</label
-              >
-              <div class="flex">
-              <input
-                :type="campo.tipo"
-                :value="campo.valor"
-                :id="'campoExtra' + index"
-                class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
-                placeholder="Item text here..."
-                v-model="gridItemsText"
-              />
-              <button @click="removerCampo(index)" class=" ml-6 pb-3 outline-none text-grey">Remover</button>
-            </div>
-            </div>
-          </div>
-        </div>
-        <div class="class">
-          <button type="button" class="bg-blue text-white outline-none border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue">
-            Cadastrar exame
-          </button>
-        </div>
+
+        <button type="button"
+          class="bg-blue text-white outline-none mb-6 border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue">
+          Cadastrar exame
+        </button>
       </form>
     </div>
   </main>
 </template>
 
 <style scoped>
-#wrapper {
-  display: flex;
-  place-items: flex-start;
-  flex-wrap: wrap;
-  flex-direction: column;
-  width: 30rem;
-}
+  #wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 30rem;
+  }
 
-#navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-}
+  #navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+  }
 
-.wrapper-headline {
-  margin-top: calc(60px + 4rem);
-}
-.select-placeholder {
-  color: #999999;
-  font-style: italic;
-}
+  .wrapper-headline {
+    margin-top: calc(60px + 4rem);
+  }
+
+  #drag {
+    z-index: 0;
+    background-color: red;
+  }
+
+  .buttons {
+    margin-top: 35px;
+  }
+
+  .not-draggable {
+    cursor: no-drop;
+  }
 </style>
 
 <script>
-export default {
-  data() {
-    return {
-      selectedTipo: '',
-      gridItemsText: '',
-      campo2: '',
-      campo3: '',
-      camposExtras: []
-    }
-  },
-  methods: {
-    onChangeTipo() {
-      // Limpar campos extras quando o tipo é alterado
-      this.camposExtras = []
+  let id = 1;
+
+  export default {
+    data() {
+      return {
+        gridItemsText: '',
+        camposExtras: [],
+        enabled: true,
+        list: [
+        ],
+        dragging: false,
+        novaQuestaoText: '',
+        selectedQuestion: ''
+      };
     },
-    adicionarCampo() {
-      // Adicionar um novo campo extra
-      this.camposExtras.push({
-        tipo: 'text',
-        valor: ''
-      })
+    computed: {
+      draggingInfo() {
+        //return this.dragging ? "Alterando a ordem" : "";
+      }
     },
-    removerCampo(index) {
-      // Remover o campo extra com o índice especificado
-      this.camposExtras.splice(index, 1)
+    methods: {
+      handleChange() {},
+
+      incluirQuestao() {
+        if (this.selectedQuestion) {
+          const valorSelecionado = this.selectedQuestion;
+          const novaQuestao = {
+            name: valorSelecionado,
+            id: this.list.length
+          };
+          this.list.push(novaQuestao);
+        }
+      },
+      checkMove: function (e) {
+        window.console.log("Future index: " + e.draggedContext.futureIndex);
+      }
     },
-    handleChange() {}
+
+    components: {
+      draggable
+    },
+
   }
-}
 </script>
