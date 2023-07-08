@@ -4,6 +4,7 @@ from controllers.question_controller import QuestionController
 from controllers.user_controller import user_bp
 
 from controllers.exame_controller import ExameController
+from controllers.resposta_controller import RespostaController
 from dotenv import load_dotenv
 from models import db
 import pyrebase
@@ -22,6 +23,7 @@ def reset_session():
 api = Api(app)  # 'app' é a sua instância do aplicativo Flask
 api.add_resource(QuestionController, '/questions')
 api.add_resource(ExameController, '/exame', '/exame/<int:exame_id>')
+api.add_resource(RespostaController, '/resposta', '/resposta/<int:id_exame>')
 app.register_blueprint(user_bp)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(

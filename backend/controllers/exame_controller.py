@@ -1,7 +1,8 @@
 from flask import request
 from models import Exame, Question, db
 from flask_restful import Resource
-
+from datetime import datetime
+import json
 
 class ExameController(Resource):
 
@@ -23,8 +24,6 @@ class ExameController(Resource):
                         } for i in questao.items],
                         'answer_key':
                         questao.answer_key,
-                        # Aqui você pode adicionar outros
-                        # campos da questão, se necessário
                     }
                     questoes_json.append(questao_data)
                 return questoes_json, 200
@@ -37,8 +36,10 @@ class ExameController(Resource):
                 exame_data = {
                     'id': exame.id,
                     'titulo': exame.titulo,
-                    # Aqui você pode adicionar outros
-                    # campos do exame, se necessário
+                    'inicio': exame.inicio.strftime("%Y-%m-%d %H:%M:%S"),
+                    'fim': exame.fim.strftime("%Y-%m-%d %H:%M:%S"),
+                    'estado': exame.estado,
+                    'professor_id': exame.professor_id,
                 }
                 exames_json.append(exame_data)
             return exames_json, 200
@@ -48,9 +49,21 @@ class ExameController(Resource):
 
         titulo = data.get('titulo')
         questoes_ids = data.get('questoes')
+        professor_id = data.get('professor_id')
+        inicio = data.get('inicio')
+        fim = data.get('fim')
+        estado = data.get('estado')
 
-        if titulo and questoes_ids:
-            exame = Exame(titulo=titulo)
+        if titulo and questoes_ids and professor_id and inicio and fim and estado:
+            # Converter a data de início e fim de string para objeto datetime
+            inicio = datetime.strptime(inicio, '%Y-%m-%d %H:%M:%S')
+            fim = datetime.strptime(fim, '%Y-%m-%d %H:%M:%S')
+
+            exame = Exame(titulo=titulo,
+                          professor_id=professor_id,
+                          inicio=inicio,
+                          fim=fim,
+                          estado=estado)
 
             # Buscar as questões existentes pelo ID no banco de dados
             questoes = Question.query.filter(
