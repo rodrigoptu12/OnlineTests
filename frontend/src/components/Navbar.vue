@@ -17,7 +17,9 @@ const mobileMenuOpen = ref(false)
       <div class="flex">
         <a href="#" class="flex">
           <OnlineTestesLogoSolid />
-          <span class="font-semibold text-xl tracking-tight ml-4 mr-4 text-white">Online Testes</span>
+          <span class="font-semibold text-xl tracking-tight ml-4 mr-4 text-white"
+            >Online Testes</span
+          >
         </a>
       </div>
       <div class="flex lg:hidden">
@@ -34,23 +36,25 @@ const mobileMenuOpen = ref(false)
         <div class="text-sm lg:flex-grow">
           <a
             href="/new-exam"
-            class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6  text-blue dark:text-blue"
+            class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
             >Exames</a
           >
           <a
             href="new-question"
-            class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6  text-blue dark:text-blue"
+            class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
             >Questões</a
           >
           <a
             href="#"
-            class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6  text-blue dark:text-blue"
+            class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
             >...</a
           >
         </div>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="/" class="text-sm font-semibold leading-6 text-blue dark:text-blue hover:text-white"
+        <a
+          href="/"
+          class="text-sm font-semibold leading-6 text-blue dark:text-blue hover:text-white"
           >Log out <span aria-hidden="true">&rarr;</span></a
         >
       </div>
