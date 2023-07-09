@@ -28,10 +28,10 @@ import Navbar from '../components/Navbar.vue'
               Comando da questão
             </label>
             <input
-              class="appearance-none block w-full bg-transparent text-grey border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
+              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
               id="grid-command"
               type="text"
-              placeholder="Command here..."
+              placeholder="Digite aqui o comando da questão..."
             />
             <!--<p class="text-red-500 text-xs italic">Por favor, preencha este campo.</p>-->
           </div>
@@ -46,7 +46,7 @@ import Navbar from '../components/Navbar.vue'
               class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
               id="grid-answer-key"
               type="text"
-              placeholder="Answer key here..."
+              placeholder="Digite aqui a chave resposta da questão..."
             />
           </div>
         </div>
