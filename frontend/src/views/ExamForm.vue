@@ -5,7 +5,7 @@
 
 <template>
   <main id="wrapper">
-    <Navbar id="navbar" />
+    <Navbar id="navbar"/>
     <div class="wrapper-headline flex flex-wrap -mx-3 mb-6">
       <div class="w-full px-3 mb-6 md:mb-0">
         <h1 class="mb-1 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
@@ -17,20 +17,21 @@
       </div>
     </div>
     <div class="w-full">
-      <form class="w-full max-w-lg">
+      <form class="w-full ">
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3 mb-6 md:mb-0">
-            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-command">
+            <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-200 text-xs font-bold mb-2" for="grid-command">
               Título do exame
             </label>
-            <input
-              required class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
+            <input required
+              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
               id="grid-command" type="text" placeholder="Digite aqui o título do exame..." />
           </div>
         </div>
+       
         <div class="flex flex-wrap -mx-3 mb-8">
           <div class="w-full px-3 mb-6 md:mb-0">
-            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-question-type">
+            <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-200 text-xs font-bold mb-2" for="grid-question-type">
               Lista de questões
             </label>
             <div class="relative">
@@ -59,39 +60,41 @@
                   @click="incluirQuestao">Incluir questão</a>
                 <!--<button class="btn btn-secondary" @click="replace">Replace</button>-->
 
-                <div class="form-check mt-6">
-                  <input id="disabled" type="checkbox" v-model="enabled" class="form-check-input" />
-                  <label class="form-check-label" for="disabled">Ativar ordenação de questões</label>
-                </div>
+               
               </div>
 
             </div>
           </div>
         </div>
 
-        <div class="mt-6">
+        <div class="w-full mt-6">
 
-
-          <div class="flex mt-6 mb-6">
+          <div class="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+            <input v-model="enabled" id="disabled" checked type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="bordered-checkbox-2" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ativar ordenação de questões</label>
+          </div>
+          <div class="w-full width-full flex mt-6 mb-6">
             <h3>{{ draggingInfo }}</h3>
 
             <draggable :list="list" :disabled="!enabled" item-key="id" class="list-group" ghost-class="ghost"
               :move="checkMove" @start="dragging = true" @end="dragging = false">
-              <template #item="{ element }">
-
-
-                <ul class="space-y-4 text-left text-gray-500 dark:text-gray-400">
-                  <li class="flex items-center space-x-3">
+              <template #item="{ element, index }">
+                <ul class="w-full text-left text-gray-500 dark:text-gray-400">
+                  <li class="flex items-center space-x-6 mb-3">
                     <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M1 5.917 5.724 10.5 15 1.5" />
                     </svg>
-                    <span class="list-group-item" :class="{ 'not-draggable': !enabled }">{{ element.name }}</span>
+                    <span class="list-group-item" :class="{ 'not-draggable': !enabled }"><b>{{ element.name }}</b></span>
+                    <span py-8 px-4 mb-3>Valor atribuído a questão: </span>
+                    <input class="appearance-none bg-transparent border border-gray-200 focus:border-blue p-3" type="number" min="0" v-model="element.pontuacao" />
+                    <button @click="removerQuestao(index)">Remover</button>
                   </li>
                 </ul>
 
               </template>
+
             </draggable>
 
           </div>
@@ -142,6 +145,10 @@
   .not-draggable {
     cursor: no-drop;
   }
+
+  .width-full {
+    width: 70rem;
+  }
 </style>
 
 <script>
@@ -153,8 +160,7 @@
         gridItemsText: '',
         camposExtras: [],
         enabled: true,
-        list: [
-        ],
+        list: [],
         dragging: false,
         novaQuestaoText: '',
         selectedQuestion: ''
@@ -173,11 +179,16 @@
           const valorSelecionado = this.selectedQuestion;
           const novaQuestao = {
             name: valorSelecionado,
-            id: this.list.length
+            id: this.list.length,
+            pontuacao: 0 // Valor inicial da pontuação
           };
           this.list.push(novaQuestao);
         }
       },
+      removerQuestao(index) {
+        this.list.splice(index, 1);
+      },
+
       checkMove: function (e) {
         window.console.log("Future index: " + e.draggedContext.futureIndex);
       }
