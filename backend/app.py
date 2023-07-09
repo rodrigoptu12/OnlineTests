@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, jsonify
+from flask import Flask
 from flask_restful import Api
 from controllers.question_controller import QuestionController
 from controllers.user_controller import user_bp
@@ -9,15 +9,13 @@ from dotenv import load_dotenv
 from models import db
 import pyrebase
 import os
+from flask_cors import CORS
+
 
 load_dotenv()
 
 app = Flask(__name__)
-
-
-@app.before_request
-def reset_session():
-    session.pop('user_id', None)
+CORS(app)
 
 
 api = Api(app)  # 'app' é a sua instância do aplicativo Flask
@@ -59,90 +57,6 @@ app.secret_key = 'secret'
 
 with app.app_context():
     db.create_all()
-
-
-@app.route('/', methods=['POST', 'GET'])
-def index():
-    with app.app_context():
-        db.create_all()
-    if ("user" in session):
-        print(session['user'])
-        return render_template('home.html', email=session['user']['email'])
-    if request.method == "POST":
-        email = request.form['email']
-        password = request.form['password']
-        try:
-            user = auth.sign_in_with_email_and_password(email, password)
-            session['user'] = user
-            usuario_existente = Usuario.query.filter_by(email=email).first()
-            if usuario_existente:
-                return redirect('/')
-            else:
-                novo_usuario = Usuario(nome=email, email=email)
-                db.session.add(novo_usuario)
-                db.session.commit()
-            return redirect('/')
-        except:
-            return "Invalid email or password"
-    return render_template('login.html')
-
-
-# criar conta
-@app.route('/signup', methods=['POST', 'GET'])
-def signup():
-    if ("user" in session):
-        return render_template('home.html', email=session['user']['email'])
-    if request.method == "POST":
-        email = request.form['email']
-        password = request.form['password']
-        try:
-            user = auth.create_user_with_email_and_password(email, password)
-            # session['user'] = user
-            return redirect('/')
-        except:
-            return "Invalid email or password"
-    return render_template('signup.html')
-
-
-@app.route('/logout')
-def logout():
-    if ("user" not in session):
-        return redirect('/')
-    session.pop('user')
-    return redirect('/')
-
-
-class Usuario(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), nullable=False, unique=True)
-
-    def __repr__(self):
-        return f'<Usuario {self.nome}>'
-
-
-@app.route('/adicionar_usuario', methods=['POST'])
-def adicionar_usuario():
-    nome = request.form['nome']
-    email = request.form['email']
-    novo_usuario = Usuario(nome=nome, email=email)
-    db.session.add(novo_usuario)
-    db.session.commit()
-    return f'Usuário {nome} adicionado com sucesso'
-
-
-@app.route('/usuarios', methods=['GET'])
-def listar_usuarios():
-    usuarios = Usuario.query.all()
-    usuarios_json = []
-    for usuario in usuarios:
-        usuario_json = {
-            'id': usuario.id,
-            'nome': usuario.nome,
-            'email': usuario.email
-        }
-        usuarios_json.append(usuario_json)
-    return jsonify(usuarios_json)
 
 
 if __name__ == '__main__':
