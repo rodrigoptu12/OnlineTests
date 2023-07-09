@@ -168,11 +168,30 @@ export default {
       response2: ''
     }
   },
+  /* created() {
+    this.verificarLogin();
+  }, */
   methods: {
     onChangeTipo() {
       // Limpar campos extras quando o tipo é alterado
       this.camposExtras = []
     },
+    /* verificarLogin() {
+      axios.get('/me')
+        .then(response => {
+          console.log(response)
+          if (response.status === 200) {
+            console.log('Resposta', response)
+          }
+          else {
+            this.$router.push('/');
+          }
+        })
+        .catch(error => {
+          console.log(error)
+          this.$router.push('/');
+        });
+    }, */
     adicionarCampo() {
       // Adicionar um novo campo extra
       this.camposExtras.push({

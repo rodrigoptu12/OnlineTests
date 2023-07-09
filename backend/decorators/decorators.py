@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import session, jsonify
 
+
 def require_login(func):
     @wraps(func)
     def decorated(*args, **kwargs):

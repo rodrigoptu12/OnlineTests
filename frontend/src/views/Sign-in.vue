@@ -222,7 +222,6 @@ export default {
         .then(response => {
           console.log(response)
           if (response.status === 200) {
-            // Redirecionar para outra página usando o Vue Router
             this.$router.push('/new-question');
           }
         })

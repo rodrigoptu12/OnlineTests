@@ -19,7 +19,7 @@ import draggable from 'vuedraggable'
       </div>
     </div>
     <div class="w-full">
-      <form class="w-full">
+      <form class="w-full" @submit="createExam">
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3 mb-6 md:mb-0">
             <label
@@ -34,6 +34,45 @@ import draggable from 'vuedraggable'
               id="grid-command"
               type="text"
               placeholder="Digite aqui o título do exame..."
+              v-model="titulo"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3 mb-6 md:mb-0">
+            <label
+              class="block uppercase tracking-wide text-gray-700 dark:text-gray-200 text-xs font-bold mb-2"
+              for="grid-command"
+            >
+              Início
+            </label>
+            <input
+              required
+              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
+              id="grid-command"
+              type="datetime-local"
+              placeholder="Digite aqui o título do exame..."
+              v-model="inicio"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3 mb-6 md:mb-0">
+            <label
+              class="block uppercase tracking-wide text-gray-700 dark:text-gray-200 text-xs font-bold mb-2"
+              for="grid-command"
+            >
+              Fim
+            </label>
+            <input
+              required
+              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:text-blue focus:outline-none focus:bg-transparent focus:border-blue"
+              id="grid-command"
+              type="datetime-local"
+              placeholder="Digite aqui o título do exame..."
+              v-model="fim"
             />
           </div>
         </div>
@@ -56,12 +95,7 @@ import draggable from 'vuedraggable'
                   id="grid-question-type"
                 >
                   <option value="" disabled selected hidden>Selecione uma questão...</option>
-                  <option value="Questão 1">Questão 1</option>
-                  <option value="Questão 2">Questão 2</option>
-                  <option value="Questão 3">Questão 3</option>
-                  <option value="Questão 4">Questão 4</option>
-                  <option value="Questão 5">Questão 5</option>
-                  <option value="Questão 6">Questão 6</option>
+                  <option v-for="question in questions" :value="question" :key="question.id">{{ question.command }}</option>
                 </select>
                 <!--<div
                   class="pointer-events-none absolute inset-y-0 right-0 flex items-center mt-3 mb-6 px-2 text-gray-700">
@@ -152,7 +186,7 @@ import draggable from 'vuedraggable'
         </div>
 
         <button
-          type="button"
+          type="submit"
           class="bg-blue text-white outline-none mb-6 border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue"
         >
           Cadastrar exame
@@ -202,7 +236,14 @@ import draggable from 'vuedraggable'
 </style>
 
 <script>
-let id = 1
+import axios from 'axios';
+
+const API_URL = 'http://127.0.0.1:5000';
+
+// Configuração do axios para incluir cabeçalhos CORS
+axios.defaults.baseURL = API_URL;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
 
 export default {
   data() {
@@ -211,15 +252,18 @@ export default {
       camposExtras: [],
       enabled: true,
       list: [],
+      questoes_ids: [],
       dragging: false,
       novaQuestaoText: '',
-      selectedQuestion: ''
+      selectedQuestion: '',
+      questions: [],
+      titulo: '',
+      inicio: '',
+      fim: ''
     }
   },
-  computed: {
-    draggingInfo() {
-      //return this.dragging ? "Alterando a ordem" : "";
-    }
+  mounted() {
+    this.fetchQuestions();
   },
   methods: {
     handleChange() {},
@@ -228,11 +272,12 @@ export default {
       if (this.selectedQuestion) {
         const valorSelecionado = this.selectedQuestion
         const novaQuestao = {
-          name: valorSelecionado,
-          id: this.list.length,
+          name: valorSelecionado.command,
           pontuacao: 0 // Valor inicial da pontuação
         }
+        console.log(this.selectedQuestion)
         this.list.push(novaQuestao)
+        this.questoes_ids.push(valorSelecionado.id)
       }
     },
     removerQuestao(index) {
@@ -241,6 +286,36 @@ export default {
 
     checkMove: function (e) {
       window.console.log('Future index: ' + e.draggedContext.futureIndex)
+    },
+    async fetchQuestions() {
+      try {
+        const response = await axios.get('/questions'); // Replace '/api/questions' with your actual API endpoint
+        this.questions = response.data;
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      }
+  },
+  createExam(event) {
+      event.preventDefault();
+
+        const data = {
+          titulo: this.titulo,
+          professor_id: 1,
+          inicio: this.inicio,
+          fim: this.fim,
+          questoes: this.questoes_ids,
+          estado: 'agendado'
+        };
+      
+      console.log(data);
+
+      axios.post('/exame', data)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        });
     }
   },
 

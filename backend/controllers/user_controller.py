@@ -176,7 +176,8 @@ class UserController(Resource):
         if not user or not user.verify_password(password):
             return jsonify({'error': 'Invalid email or password'}), 401
 
-        # Autenticação bem-sucedida, armazene o ID do usuário na sessão
+        session.permanent = True
+
         session['user_id'] = user.userId
 
         return jsonify(user.serialize()), 200
@@ -192,9 +193,9 @@ class UserController(Resource):
     @staticmethod
     @user_bp.route('/me', methods=['GET'])
     @cross_origin()
-    @require_login
     def get_current_user():
         user_id = session.get('user_id')
+        print(user_id)
         if user_id:
             user = User.query.get(user_id)
             if user:
