@@ -2,3 +2,7 @@ flask
 pyrebase4
 python-dotenv
 Flask-SQLAlchemy
+Werkzeug
+Flask-RESTful
+psycopg2
+Flask-Cors
