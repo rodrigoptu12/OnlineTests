@@ -16,8 +16,6 @@ import OnlineTestesLogo from './components/images/OnlineTestesLogo.vue'
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/signin">Acessar/Cadastrar</RouterLink>
-        <RouterLink to="/new-question">New Questions</RouterLink>
-        <RouterLink to="/new-exam">New Exam</RouterLink>
       </nav>
       <UnbLogo />
     </div>
