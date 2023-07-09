@@ -12,7 +12,21 @@
             Formulário de cadastro de nova conta.
           </p>
         </div>
-        <form>
+        <form @submit="createUser">
+          <div class="mb-6">
+            <label
+              for="repeat-password"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Nome:</label
+            >
+            <input
+              id="repeat-password"
+              v-model="name"
+              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
+              placeholder="Repita a sua senha..."
+              required
+            />
+          </div>
           <div class="mb-6">
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Seu email:</label
@@ -20,6 +34,7 @@
             <input
               type="email"
               id="email"
+              v-model="email"
               class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
               placeholder="seu-email@exemplo.com..."
               required
@@ -34,6 +49,7 @@
             <input
               type="password"
               id="password"
+              v-model="password"
               class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
               placeholder="Digite aqui a sua senha..."
               required
@@ -48,10 +64,37 @@
             <input
               type="password"
               id="repeat-password"
+              v-model="confirm_password"
               class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
               placeholder="Repita a sua senha..."
               required
             />
+          </div>
+          <div class="mb-6">
+            <label
+              for="repeat-password"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Matrícula:</label
+            >
+            <input
+              type="number"
+              id="repeat-password"
+              v-model="registration"
+              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
+              placeholder="Repita a sua senha..."
+              required
+            />
+          </div>
+          <div class="mb-6">
+            <input
+              type="checkbox"
+              id="isTeacher"
+              v-model="isTeacher"
+              class="mr-2"
+            />
+            <label for="isTeacher" class="text-sm text-gray-900 dark:text-white">
+              É professor?
+            </label>
           </div>
           <button
             type="submit"
@@ -79,7 +122,7 @@
               Insira suas credenciais e acesse a sua conta.
             </p>
           </div>
-          <form>
+          <form @submit="login">
             <div class="mb-6">
               <label
                 for="email"
@@ -89,6 +132,7 @@
               <input
                 type="email"
                 id="email"
+                v-model="email"
                 class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
                 placeholder="seu-email@exemplo.com..."
                 required
@@ -103,6 +147,7 @@
               <input
                 type="password"
                 id="password"
+                v-model="password"
                 class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
                 placeholder="Digite aqui a sua senha..."
                 required
@@ -140,15 +185,70 @@
 </style>
 
 <script>
+import axios from 'axios';
+
+const API_URL = 'http://127.0.0.1:5000';
+
+// Configuração do axios para incluir cabeçalhos CORS
+axios.defaults.baseURL = API_URL;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+
 export default {
   data() {
     return {
-      showSignup: false
+      showSignup: false,
+      email: '',
+      password: '',
+      confirm_password: '',
+      registration: '',
+      name: '',
+      isTeacher: false
     }
   },
   methods: {
     toggleForm() {
       this.showSignup = !this.showSignup
+    },
+    login(event) {
+      event.preventDefault();
+
+      const data = {
+        email: this.email,
+        password: this.password
+      };
+
+      axios.post('/login', data)
+        .then(response => {
+          console.log(response)
+          if (response.status === 200) {
+            // Redirecionar para outra página usando o Vue Router
+            this.$router.push('/new-question');
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        });
+    },
+    createUser(event) {
+      event.preventDefault();
+
+      const data = {
+        email: this.email,
+        password: this.password,
+        confirm_password: this.confirm_password,
+        registration: this.registration,
+        name: this.name,
+        isTeacher: this.isTeacher
+      };
+
+      axios.post('/users', data)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        });
     }
   }
 }

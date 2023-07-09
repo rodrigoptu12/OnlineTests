@@ -179,7 +179,7 @@ class UserController(Resource):
         # Autenticação bem-sucedida, armazene o ID do usuário na sessão
         session['user_id'] = user.userId
 
-        return jsonify({'message': 'Login successful'})
+        return jsonify(user.serialize()), 200
 
     @staticmethod
     @user_bp.route('/logout', methods=['POST'])

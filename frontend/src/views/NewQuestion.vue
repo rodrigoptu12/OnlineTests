@@ -18,7 +18,7 @@ import Navbar from '../components/Navbar.vue'
       </div>
     </div>
     <div>
-      <form class="w-full max-w-lg">
+      <form class="w-full max-w-lg" @submit="createQuestion">
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3 mb-6 md:mb-0">
             <label
@@ -32,6 +32,7 @@ import Navbar from '../components/Navbar.vue'
               id="grid-command"
               type="text"
               placeholder="Digite aqui o comando da questão..."
+              v-model="command"
             />
             <!--<p class="text-red-500 text-xs italic">Por favor, preencha este campo.</p>-->
           </div>
@@ -47,6 +48,7 @@ import Navbar from '../components/Navbar.vue'
               id="grid-answer-key"
               type="text"
               placeholder="Digite aqui a chave resposta da questão..."
+              v-model="answer_key"
             />
           </div>
         </div>
@@ -89,61 +91,25 @@ import Navbar from '../components/Navbar.vue'
 
         <div class="flex flex-wrap -mx-3 mb-6">
           <div v-if="selectedTipo === 'm_e'" class="w-full px-3">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-items-text"
-            >
-              Texto do item de múltipla escolha
-            </label>
-            <input
-              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
-              id="grid-items-text"
-              type="text"
-              placeholder="Digite aqui o texto da alternativa..."
-              v-model="gridItemsText"
-            />
-          </div>
-        </div>
-
-        <div class="flex flex-wrap -mx-3 mb-6">
-          <div v-if="selectedTipo === 'm_e'" class="w-full px-3">
-            <button
-              type="button"
-              @click="adicionarCampo"
-              class="bg-grey mb-6 text-white outline-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none"
-            >
-              Adicionar texto de item
-            </button>
-            <div v-for="(campo, index) in camposExtras" :key="index">
-              <label
-                :for="'campoExtra' + index"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >Digite aqui o texto da alternativa {{ index + 1 }}</label
-              >
-              <div class="flex">
-                <input
-                  :type="campo.tipo"
-                  :value="campo.valor"
-                  :id="'campoExtra' + index"
-                  class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
-                  placeholder="Item text here..."
-                  v-model="gridItemsText"
-                />
-                <button
-                  @click="removerCampo(element, index)"
-                  class="ml-6 pb-3 outline-none text-grey"
-                >
-                  Remover
-                </button>
+            <button class="bg-grey mb-6 text-white outline-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none" @click="adicionarInput">Adicionar Questão</button>
+            <div>
+              <div v-for="(input, index) in inputs" :key="index">
+                <input class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue" v-model="input.text" type="text">
+                <button @click="removerInput(index)">Remover</button>
               </div>
+            </div>
+          </div>
+
+          <div v-if="selectedTipo === 'v_f'" class="w-full px-3">
+            <div>
+                <input class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"  type="text" v-model="response1">
+
+                <input class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"  type="text" v-model="response2">
             </div>
           </div>
         </div>
         <div class="class">
-          <button
-            type="button"
-            class="bg-blue text-white outline-none border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue"
-          >
+          <button type="submit" class="bg-blue text-white outline-none border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue">
             Cadastrar questão
           </button>
         </div>
@@ -178,6 +144,15 @@ import Navbar from '../components/Navbar.vue'
 </style>
 
 <script>
+import axios from 'axios';
+
+const API_URL = 'http://127.0.0.1:5000';
+
+// Configuração do axios para incluir cabeçalhos CORS
+axios.defaults.baseURL = API_URL;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+
 export default {
   data() {
     return {
@@ -185,7 +160,12 @@ export default {
       gridItemsText: '',
       campo2: '',
       campo3: '',
-      camposExtras: []
+      camposExtras: [],
+      inputs: [],
+      command: '',
+      answer_key: '',
+      response1: '',
+      response2: ''
     }
   },
   methods: {
@@ -197,14 +177,62 @@ export default {
       // Adicionar um novo campo extra
       this.camposExtras.push({
         tipo: 'text',
-        valor: ''
+        valor: '',
+        inputs: [],
       })
     },
     removerCampo(index) {
       // Remover o campo extra com o índice especificado
       this.camposExtras.splice(index, 1)
     },
-    handleChange() {}
+    handleChange() {},
+    adicionarInput() {
+      event.preventDefault();
+      this.inputs.push({ text: '' });
+    },
+    removerInput(index) {
+      event.preventDefault();
+      this.inputs.splice(index, 1);
+    },
+    createQuestion(event) {
+      event.preventDefault();
+
+      let data;
+
+      if (this.response1) {
+        data = {
+          command: this.command,
+          answer_key: this.answer_key,
+          question_type: this.selectedTipo,
+          items: [{'text': this.response1}, {'text': this.response2}]
+        };
+      }
+
+      else if (this.inputs){
+        data = {
+          command: this.command,
+          answer_key: this.answer_key,
+          question_type: this.selectedTipo,
+          items: this.inputs
+        };
+      }
+      else {
+      data = {
+        command: this.command,
+        answer_key: this.answer_key,
+        question_type: this.selectedTipo,
+      };
+    }
+      console.log(data.items);
+
+      axios.post('/questions', data)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        });
+    }
   }
 }
 </script>
