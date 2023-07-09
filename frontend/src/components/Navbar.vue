@@ -33,12 +33,12 @@ const mobileMenuOpen = ref(false)
       <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto ml-20">
         <div class="text-sm lg:flex-grow">
           <a
-            href="#"
+            href="/new-exam"
             class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6  text-blue dark:text-blue"
             >Exames</a
           >
           <a
-            href="#"
+            href="new-question"
             class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6  text-blue dark:text-blue"
             >Questões</a
           >
