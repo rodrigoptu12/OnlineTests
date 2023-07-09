@@ -1,10 +1,3 @@
-.venv
-*.pyc
-.env
-.DS_Store
-.idea
-__pycache__
-
 # Logs
 logs
 *.log
@@ -15,10 +8,12 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.DS_Stores
 dist
 dist-ssr
 coverage
 *.local
+package-lock.json
 
 /cypress/videos/
 /cypress/screenshots/
@@ -26,6 +21,7 @@ coverage
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+.idea
 *.suo
 *.ntvs*
 *.njsproj
