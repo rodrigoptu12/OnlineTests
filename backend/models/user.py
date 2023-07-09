@@ -9,7 +9,11 @@ class User(db.Model):
     registration = db.Column(db.Integer, nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
     is_teacher = db.Column(db.Boolean, default=False)
-    assigned_exames = db.relationship('Exame', backref=db.backref('assigned_professor', lazy=True), primaryjoin="User.userId == Exame.professor_id")
+    assigned_exames = db.relationship('Exame',
+                                      backref=db.backref('assigned_professor',
+                                                         lazy=True),
+                                      primaryjoin="User.userId == "
+                                      "Exame.professor_id")
 
     def serialize(self):
         return {
