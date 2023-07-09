@@ -121,21 +121,29 @@ import Navbar from '../components/Navbar.vue'
                 >Digite aqui o texto da alternativa {{ index + 1 }}</label
               >
               <div class="flex">
-              <input
-                :type="campo.tipo"
-                :value="campo.valor"
-                :id="'campoExtra' + index"
-                class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
-                placeholder="Item text here..."
-                v-model="gridItemsText"
-              />
-              <button @click="removerCampo(element, index)" class=" ml-6 pb-3 outline-none text-grey">Remover</button>
-            </div>
+                <input
+                  :type="campo.tipo"
+                  :value="campo.valor"
+                  :id="'campoExtra' + index"
+                  class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
+                  placeholder="Item text here..."
+                  v-model="gridItemsText"
+                />
+                <button
+                  @click="removerCampo(element, index)"
+                  class="ml-6 pb-3 outline-none text-grey"
+                >
+                  Remover
+                </button>
+              </div>
             </div>
           </div>
         </div>
         <div class="class">
-          <button type="button" class="bg-blue text-white outline-none border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue">
+          <button
+            type="button"
+            class="bg-blue text-white outline-none border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue"
+          >
             Cadastrar questão
           </button>
         </div>
