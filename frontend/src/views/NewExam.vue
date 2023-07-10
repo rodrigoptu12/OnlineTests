@@ -309,7 +309,7 @@ export default {
     },
     async fetchQuestions() {
       try {
-        const response = await axios.get('/questions'); // Replace '/api/questions' with your actual API endpoint
+        const response = await axios.get('/questions');
         this.questions = response.data;
       } catch (error) {
         console.error('Error fetching questions:', error);

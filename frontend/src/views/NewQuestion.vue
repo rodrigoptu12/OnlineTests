@@ -91,7 +91,7 @@ import Navbar from '../components/Navbar.vue'
 
         <div class="flex flex-wrap -mx-3 mb-6">
           <div v-if="selectedTipo === 'm_e'" class="w-full px-3">
-            <button class="bg-grey mb-6 text-white outline-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none" @click="adicionarInput">Adicionar Questão</button>
+            <button class="bg-grey mb-6 text-white outline-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none" @click="adicionarInput">Adicionar alternativa</button>
             <div>
               <div v-for="(input, index) in inputs" :key="index">
                 <input class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue" v-model="input.text" type="text">

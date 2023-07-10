@@ -37,12 +37,17 @@ const mobileMenuOpen = ref(false)
           <a
             href="/new-exam"
             class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
-            >Exames</a
+            >Criar exames</a
           >
           <a
             href="new-question"
             class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
             >Questões</a
+          >
+          <a
+            href="exams"
+            class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
+            >Exames</a
           >
           <a
             href="#"

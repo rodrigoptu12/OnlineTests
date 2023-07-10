@@ -18,12 +18,6 @@
                     Área de listagem de exames.
                 </p>
                 <div class="block w-full">
-            <button
-              type="submit"
-              class="text-white bg-blue-700 f hover:bg-blue-800 focus:ring-4 focus:outline-none focus:blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Novo exame
-            </button>
         </div>
             </div>
           
@@ -40,10 +34,10 @@
                             <b>Criado por</b>
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            <b>Quantidade de questões</b>
+                            <b>Inicio</b>
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            <b>Data</b>
+                            <b>Fim</b>
                         </th>
                         <th scope="col" class="px-6 py-3">
                             <b><span class="sr-only">Editar</span></b>
@@ -51,60 +45,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        class="bg-transparent border-b dark:bg-transparent dark:border-blue hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <tr v-for="exame in exams" :key="exame.id">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Teste 1
+                        {{ exame.titulo }}
                         </th>
                         <td class="px-6 py-4">
-                            Eduardo B.
+                        {{ exame.professor }}
                         </td>
                         <td class="px-6 py-4">
-                            08
+                        {{ exame.inicio }}
                         </td>
                         <td class="px-6 py-4">
-                            28/04/2023
+                        {{ exame.fim }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                        <button @click="editarExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</button>
                         </td>
                     </tr>
-                    <tr
-                        class="bg-transparent border-b dark:bg-transparent dark:border-blue hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Teste 2
-                        </th>
-                        <td class="px-6 py-4">
-                            Eduardo B.
-                        </td>
-                        <td class="px-6 py-4">
-                            12
-                        </td>
-                        <td class="px-6 py-4">
-                            03/06/2023
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                        </td>
-                    </tr>
-                    <tr class="bg-transparent dark:bg-transparent hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Teste 3
-                        </th>
-                        <td class="px-6 py-4">
-                            Eduardo B.
-                        </td>
-                        <td class="px-6 py-4">
-                            10
-                        </td>
-                        <td class="px-6 py-4">
-                            06/07/2023
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                        </td>
-                    </tr>
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </div>
@@ -137,3 +95,61 @@
         min-width: 100vw;
     }
 </style>
+
+<script>
+import axios from 'axios';
+
+const API_URL = 'http://127.0.0.1:5000';
+
+// Configuração do axios para incluir cabeçalhos CORS
+axios.defaults.baseURL = API_URL;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+
+export default {
+    data() {
+    return {
+      exams: ''
+    }
+},
+    created() {
+        this.verificarLogin();
+        this.fetchExams();
+    },
+    mounted() {
+        this.fetchExams();
+    },
+    methods: {
+    onChangeTipo() {
+      // Limpar campos extras quando o tipo é alterado
+      this.camposExtras = []
+    },
+    async verificarLogin() {
+      const token = localStorage.getItem('access_token');
+      
+      try {
+        const response = await axios.get('/me', {
+      headers: {
+        Authorization: `Bearer ${token}`  // Envie o token JWT no cabeçalho de autorização
+        }});
+        if (response.status !== 200) {
+      this.$router.push('/');
+      }
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+        this.$router.push('/');
+      }
+},
+async fetchExams() {
+      try {
+        const response = await axios.get('/exame'); 
+        console.log(response)
+        this.exams = response.data;
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      }
+  },
+    }
+}
+
+</script>

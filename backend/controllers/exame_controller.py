@@ -2,6 +2,7 @@ from flask import request
 from models import Exame, Question, db
 from flask_restful import Resource
 from datetime import datetime
+from models.user import User
 
 
 class ExameController(Resource):
@@ -39,7 +40,7 @@ class ExameController(Resource):
                     'inicio': exame.inicio.strftime("%Y-%m-%d %H:%M:%S"),
                     'fim': exame.fim.strftime("%Y-%m-%d %H:%M:%S"),
                     'estado': exame.estado,
-                    'professor_id': exame.professor_id,
+                    'professor': User.query.filter_by(userId=exame.professor_id).first().name,
                 }
                 exames_json.append(exame_data)
             return exames_json, 200
