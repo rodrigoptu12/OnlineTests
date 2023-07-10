@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper flex justify-center items-center w-screen h-screen">
     <div v-if="showSignup">
       <div class="signup w-full">
         <div class="w-full mb-6 md:mb-0">
@@ -172,15 +172,8 @@
 
 <style>
 .wrapper {
-  display: flex;
-  place-items: flex-start;
-  flex-wrap: wrap;
-  flex-direction: column;
-  width: 30rem;
-  margin-right: -11rem;
 }
 .signup {
-  width: 30rem;
 }
 </style>
 

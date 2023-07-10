@@ -25,6 +25,9 @@ import OnlineTestesLogo from './components/images/OnlineTestesLogo.vue'
 </template>
 
 <style scoped>
+*{
+  margin: 0;
+}
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -53,7 +56,7 @@ nav a.router-link-exact-active:hover {
 
 nav a {
   display: inline-block;
-  padding: 0 1rem;
+  padding: 0 ;
   border-left: 1px solid var(--color-border);
 }
 
@@ -62,6 +65,10 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
+  *{
+    margin: 0;
+    padding: 0;
+  }
   header {
     display: flex;
     place-items: center;
@@ -86,7 +93,7 @@ nav a:first-of-type {
     margin-left: -1rem;
     font-size: 1rem;
 
-    padding: 1rem 0;
+    padding:  0;
     margin-top: 1rem;
   }
 }
