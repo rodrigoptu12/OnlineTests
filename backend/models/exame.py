@@ -13,7 +13,8 @@ class Exame(db.Model):
     questoes = db.relationship('Question', backref='exame', lazy=True)
     respostas = db.relationship('Resposta', backref='exame', lazy=True)
     professor = db.relationship('User',
-                                backref=db.backref('exames', lazy=True))
+                                backref=db.backref('exames', lazy=True),
+                                overlaps="exames,professor")
 
     def serialize(self):
         return {

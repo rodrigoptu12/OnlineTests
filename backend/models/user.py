@@ -13,7 +13,9 @@ class User(db.Model):
                                       backref=db.backref('assigned_professor',
                                                          lazy=True),
                                       primaryjoin="User.userId == "
-                                      "Exame.professor_id")
+                                      "Exame.professor_id",
+                                      overlaps="exames,professor")
+
 
     def serialize(self):
         return {

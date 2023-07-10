@@ -6,7 +6,6 @@ from controllers.exame_controller import ExameController
 from controllers.resposta_controller import RespostaController
 from dotenv import load_dotenv
 from models import db
-import pyrebase
 import os
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -33,28 +32,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-firebase_api_key = os.getenv("FIREBASE_API_KEY")
-firebase_auth_domain = os.getenv("FIREBASE_AUTH_DOMAIN")
-firebase_project_id = os.getenv("FIREBASE_PROJECT_ID")
-firebase_storage_bucket = os.getenv("FIREBASE_STORAGE_BUCKET")
-firebase_messaging_sender_id = os.getenv("FIREBASE_MESSAGING_SENDER_ID")
-firebase_app_id = os.getenv("FIREBASE_APP_ID")
-firebase_measurement_id = os.getenv("FIREBASE_MEASUREMENT_ID")
-firebase_database_url = os.getenv("FIREBASE_DATABASE_URL")
-
-config = {
-    "apiKey": firebase_api_key,
-    "authDomain": firebase_auth_domain,
-    "projectId": firebase_project_id,
-    "storageBucket": firebase_storage_bucket,
-    "messagingSenderId": firebase_messaging_sender_id,
-    "appId": firebase_app_id,
-    "measurementId": firebase_measurement_id,
-    "databaseURL": firebase_database_url
-}
-
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
 
 app.secret_key = 'secret'
 
