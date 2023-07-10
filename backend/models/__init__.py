@@ -5,3 +5,5 @@ db = SQLAlchemy()
 from .item import Item
 from .question import Question
 from .exame import Exame
+from .user import User
+from .resposta import Resposta
