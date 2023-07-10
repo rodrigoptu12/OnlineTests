@@ -100,8 +100,7 @@ def populate_database():
                         exame4, question1, question2, item1, item2])
     db.session.commit()
 
-
-if __name__ == '_main_':
+if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         populate_database()

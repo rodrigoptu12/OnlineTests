@@ -241,7 +241,7 @@ export default {
           console.log(error)
         })
 
-      this.$router.push('/login')
+      this.$router.push('/signin')
     }
   }
 }
