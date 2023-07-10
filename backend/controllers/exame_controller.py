@@ -2,7 +2,7 @@ from flask import request
 from models import Exame, Question, db
 from flask_restful import Resource
 from datetime import datetime
-import json
+
 
 class ExameController(Resource):
 
@@ -56,8 +56,11 @@ class ExameController(Resource):
 
         if titulo and questoes_ids and professor_id and inicio and fim and estado:
             # Converter a data de início e fim de string para objeto datetime
-            inicio = datetime.strptime(inicio, '%Y-%m-%d %H:%M:%S')
-            fim = datetime.strptime(fim, '%Y-%m-%d %H:%M:%S')
+            inicio_sem_t = inicio.replace('T', ' ')
+            inicio = datetime.strptime(inicio_sem_t, '%Y-%m-%d %H:%M')
+
+            fim_sem_t = fim.replace('T', ' ')
+            fim = datetime.strptime(fim_sem_t, '%Y-%m-%d %H:%M')
 
             exame = Exame(titulo=titulo,
                           professor_id=professor_id,

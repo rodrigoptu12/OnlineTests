@@ -1,4 +1,3 @@
-from .resposta import Resposta
 from . import db
 
 
@@ -15,3 +14,13 @@ class Exame(db.Model):
     respostas = db.relationship('Resposta', backref='exame', lazy=True)
     professor = db.relationship('User',
                                 backref=db.backref('exames', lazy=True))
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'titulo': self.titulo,
+            'inicio': self.inicio.isoformat(),
+            'fim': self.fim.isoformat() if self.fim else None,
+            'estado': self.estado,
+            'professor_id': self.professor_id,
+        }

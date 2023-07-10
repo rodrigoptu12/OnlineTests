@@ -22,7 +22,8 @@ class User(db.Model):
             'email': self.email,
             'registration': self.registration,
             'is_teacher': self.is_teacher,
-            'exames': self.exames
+            'assigned_exames': [exame.serialize()
+                                for exame in self.assigned_exames]
         }
 
     @property

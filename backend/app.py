@@ -9,17 +9,15 @@ from models import db
 import pyrebase
 import os
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-
-
-@app.before_request
-def reset_session():
-    session.pop('user_id', None)
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'  # Chave secreta para assinar os tokens JWT
+jwt = JWTManager(app)
 
 api = Api(app)  # 'app' é a sua instância do aplicativo Flask
 api.add_resource(QuestionController, '/questions')
