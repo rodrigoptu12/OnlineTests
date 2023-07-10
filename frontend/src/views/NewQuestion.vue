@@ -3,9 +3,12 @@ import Navbar from '../components/Navbar.vue'
 </script>
 
 <template>
-  <main id="wrapper">
+  <div>
     <Navbar id="navbar" />
-    <div class="wrapper-headline flex flex-wrap -mx-3 mb-6">
+  </div>
+  <div class="flex justify-center items-center">  
+  <div id="wrapper" class="">
+    <div class="wrapper-headline flex flex-wrap -mx-3 mb-6 flex justify-center items-center">
       <div class="w-full px-3 mb-6 md:mb-0">
         <h1
           class="mb-1 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"
@@ -91,10 +94,19 @@ import Navbar from '../components/Navbar.vue'
 
         <div class="flex flex-wrap -mx-3 mb-6">
           <div v-if="selectedTipo === 'm_e'" class="w-full px-3">
-            <button class="bg-grey mb-6 text-white outline-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none" @click="adicionarInput">Adicionar alternativa</button>
+            <button
+              class="bg-grey mb-6 text-white outline-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none"
+              @click="adicionarInput"
+            >
+              Adicionar alternativa
+            </button>
             <div>
               <div v-for="(input, index) in inputs" :key="index">
-                <input class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue" v-model="input.text" type="text">
+                <input
+                  class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
+                  v-model="input.text"
+                  type="text"
+                />
                 <button @click="removerInput(index)">Remover</button>
               </div>
             </div>
@@ -102,20 +114,32 @@ import Navbar from '../components/Navbar.vue'
 
           <div v-if="selectedTipo === 'v_f'" class="w-full px-3">
             <div>
-                <input class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"  type="text" v-model="response1">
+              <input
+                class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
+                type="text"
+                v-model="response1"
+              />
 
-                <input class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"  type="text" v-model="response2">
+              <input
+                class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
+                type="text"
+                v-model="response2"
+              />
             </div>
           </div>
         </div>
         <div class="class">
-          <button type="submit" class="bg-blue text-white outline-none border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue">
+          <button
+            type="submit"
+            class="bg-blue text-white outline-none border-none block w-1/2 border border-gray-200 rounded py-3 px-4 focus:outline-none focus:text-blue"
+          >
             Cadastrar questão
           </button>
         </div>
       </form>
     </div>
-  </main>
+  </div>
+</div>
 </template>
 
 <style scoped>
@@ -144,14 +168,15 @@ import Navbar from '../components/Navbar.vue'
 </style>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
-const API_URL = 'http://127.0.0.1:5000';
+const API_URL = 'http://127.0.0.1:5000'
 
 // Configuração do axios para incluir cabeçalhos CORS
-axios.defaults.baseURL = API_URL;
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+axios.defaults.baseURL = API_URL
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+axios.defaults.headers.common['Access-Control-Allow-Headers'] =
+  'Origin, X-Requested-With, Content-Type, Accept'
 
 export default {
   data() {
@@ -169,7 +194,7 @@ export default {
     }
   },
   created() {
-    this.verificarLogin();
+    this.verificarLogin()
   },
   methods: {
     onChangeTipo() {
@@ -177,27 +202,28 @@ export default {
       this.camposExtras = []
     },
     async verificarLogin() {
-      const token = localStorage.getItem('access_token');
-      
+      const token = localStorage.getItem('access_token')
+
       try {
         const response = await axios.get('/me', {
-      headers: {
-        Authorization: `Bearer ${token}`  // Envie o token JWT no cabeçalho de autorização
-        }});
+          headers: {
+            Authorization: `Bearer ${token}` // Envie o token JWT no cabeçalho de autorização
+          }
+        })
         if (response.status !== 200) {
-      this.$router.push('/');
-      }
+          this.$router.push('/')
+        }
       } catch (error) {
-        console.error('Error fetching questions:', error);
-        this.$router.push('/');
+        console.error('Error fetching questions:', error)
+        this.$router.push('/')
       }
-},
+    },
     adicionarCampo() {
       // Adicionar um novo campo extra
       this.camposExtras.push({
         tipo: 'text',
         valor: '',
-        inputs: [],
+        inputs: []
       })
     },
     removerCampo(index) {
@@ -206,51 +232,49 @@ export default {
     },
     handleChange() {},
     adicionarInput() {
-      event.preventDefault();
-      this.inputs.push({ text: '' });
+      event.preventDefault()
+      this.inputs.push({ text: '' })
     },
     removerInput(index) {
-      event.preventDefault();
-      this.inputs.splice(index, 1);
+      event.preventDefault()
+      this.inputs.splice(index, 1)
     },
     createQuestion(event) {
-      event.preventDefault();
+      event.preventDefault()
 
-      let data;
+      let data
 
       if (this.response1) {
         data = {
           command: this.command,
           answer_key: this.answer_key,
           question_type: this.selectedTipo,
-          items: [{'text': this.response1}, {'text': this.response2}]
-        };
-      }
-
-      else if (this.inputs){
+          items: [{ text: this.response1 }, { text: this.response2 }]
+        }
+      } else if (this.inputs) {
         data = {
           command: this.command,
           answer_key: this.answer_key,
           question_type: this.selectedTipo,
           items: this.inputs
-        };
+        }
+      } else {
+        data = {
+          command: this.command,
+          answer_key: this.answer_key,
+          question_type: this.selectedTipo
+        }
       }
-      else {
-      data = {
-        command: this.command,
-        answer_key: this.answer_key,
-        question_type: this.selectedTipo,
-      };
-    }
-      console.log(data.items);
+      console.log(data.items)
 
-      axios.post('/questions', data)
-        .then(response => {
+      axios
+        .post('/questions', data)
+        .then((response) => {
           console.log(response)
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
-        });
+        })
     }
   }
 }

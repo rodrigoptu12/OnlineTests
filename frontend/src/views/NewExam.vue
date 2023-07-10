@@ -4,8 +4,10 @@ import draggable from 'vuedraggable'
 </script>
 
 <template>
-  <main id="wrapper">
+  <div>
     <Navbar id="navbar" />
+  </div>
+  <main id="wrapper">
     <div class="wrapper-headline flex flex-wrap -mx-3 mb-6">
       <div class="w-full px-3 mb-6 md:mb-0">
         <h1
@@ -107,7 +109,7 @@ import draggable from 'vuedraggable'
 
               <div class="form-group mt-8">
                 <a
-                  class="bg-grey mb-6 text-white outline-none w-1/3 border border-gray-200 rounded py-3 px-4 focus:outline-none"
+                  class="bg-blue mb-6 text-white outline-none w-1/3 border border-gray-200 rounded py-3 px-4 focus:outline-none"
                   @click="incluirQuestao"
                   >Incluir questão</a
                 >
