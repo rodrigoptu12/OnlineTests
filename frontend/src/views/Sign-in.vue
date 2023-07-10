@@ -86,12 +86,7 @@
             />
           </div>
           <div class="mb-6">
-            <input
-              type="checkbox"
-              id="isTeacher"
-              v-model="isTeacher"
-              class="mr-2"
-            />
+            <input type="checkbox" id="isTeacher" v-model="isTeacher" class="mr-2" />
             <label for="isTeacher" class="text-sm text-gray-900 dark:text-white">
               É professor?
             </label>
@@ -185,14 +180,15 @@
 </style>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
-const API_URL = 'http://127.0.0.1:5000';
+const API_URL = 'http://127.0.0.1:5000'
 
 // Configuração do axios para incluir cabeçalhos CORS
-axios.defaults.baseURL = API_URL;
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+axios.defaults.baseURL = API_URL
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+axios.defaults.headers.common['Access-Control-Allow-Headers'] =
+  'Origin, X-Requested-With, Content-Type, Accept'
 
 export default {
   data() {
@@ -211,27 +207,28 @@ export default {
       this.showSignup = !this.showSignup
     },
     login(event) {
-      event.preventDefault();
+      event.preventDefault()
 
       const data = {
         email: this.email,
         password: this.password
-      };
+      }
 
-      axios.post('/login', data)
-        .then(response => {
+      axios
+        .post('/login', data)
+        .then((response) => {
           console.log(response)
           if (response.status === 200) {
-            localStorage.setItem('access_token', response.data.access_token);
-            this.$router.push('/new-question');
+            localStorage.setItem('access_token', response.data.access_token)
+            this.$router.push('/new-question')
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
-        });
+        })
     },
     createUser(event) {
-      event.preventDefault();
+      event.preventDefault()
 
       const data = {
         email: this.email,
@@ -240,15 +237,18 @@ export default {
         registration: this.registration,
         name: this.name,
         isTeacher: this.isTeacher
-      };
+      }
 
-      axios.post('/users', data)
-        .then(response => {
+      axios
+        .post('/users', data)
+        .then((response) => {
           console.log(response)
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
-        });
+        })
+
+      this.$router.push('/login')
     }
   }
 }

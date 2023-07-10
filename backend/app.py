@@ -15,7 +15,8 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-app.config['JWT_SECRET_KEY'] = 'your-secret-key'  # Chave secreta para assinar os tokens JWT
+# Chave secreta para assinar os tokens JWT
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 jwt = JWTManager(app)
 
 api = Api(app)  # 'app' é a sua instância do aplicativo Flask

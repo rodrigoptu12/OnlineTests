@@ -2,6 +2,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-from .item import Item
-from .question import Question
 from .exame import Exame
+from .question import Question
+from .item import Item
+from .user import User
+from .resposta import Resposta
