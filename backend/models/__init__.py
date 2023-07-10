@@ -4,6 +4,4 @@ db = SQLAlchemy()
 
 from .exame import Exame
 from .question import Question
-from .item import Item
-from .user import User
-from .resposta import Resposta
+from .exame import Exame
