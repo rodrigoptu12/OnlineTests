@@ -5,6 +5,9 @@ from models.user import User
 from models import db
 from flask import Blueprint
 from flask_cors import cross_origin
+from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import get_jwt_identity
+
 
 user_bp = Blueprint('user', __name__)
 
@@ -180,21 +183,26 @@ class UserController(Resource):
 
         session['user_id'] = user.userId
 
-        return jsonify(user.serialize()), 200
+        access_token = create_access_token(identity=user.userId)
+
+        return jsonify(access_token=access_token), 200
 
     @staticmethod
     @user_bp.route('/logout', methods=['POST'])
     @cross_origin()
-    @require_login
+    @jwt_required()
     def logout():
-        session.pop('user_id', None)
+        """ jti = get_raw_jwt()['jti']
+        revoked_tokens.add(jti)  """
+
         return jsonify({'message': 'Logged out'})
 
     @staticmethod
     @user_bp.route('/me', methods=['GET'])
     @cross_origin()
+    @jwt_required()
     def get_current_user():
-        user_id = session.get('user_id')
+        user_id = get_jwt_identity()
         print(user_id)
         if user_id:
             user = User.query.get(user_id)

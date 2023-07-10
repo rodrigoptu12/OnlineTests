@@ -265,9 +265,29 @@ export default {
   mounted() {
     this.fetchQuestions();
   },
+  created() {
+      this.verificarLogin();
+  },
   methods: {
     handleChange() {},
+    
+     async verificarLogin() {
+      const token = localStorage.getItem('access_token');
+      
+      try {
+        const response = await axios.get('/me', {
+      headers: {
+        Authorization: `Bearer ${token}`  // Envie o token JWT no cabeçalho de autorização
+        }});
+        if (response.status !== 200) {
+      this.$router.push('/');
+      }
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+        this.$router.push('/');
+      }
 
+  },
     incluirQuestao() {
       if (this.selectedQuestion) {
         const valorSelecionado = this.selectedQuestion

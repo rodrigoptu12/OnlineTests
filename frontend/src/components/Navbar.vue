@@ -52,11 +52,7 @@ const mobileMenuOpen = ref(false)
         </div>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a
-          href="/"
-          class="text-sm font-semibold leading-6 text-blue dark:text-blue hover:text-white"
-          >Log out <span aria-hidden="true">&rarr;</span></a
-        >
+        <button class="text-sm font-semibold leading-6 text-blue dark:text-blue hover:text-white" @click="handleLogout">Logout</button>
       </div>
     </nav>
   </header>
@@ -67,3 +63,14 @@ const mobileMenuOpen = ref(false)
   background-color: var(--color-navbar-background);
 }
 </style>
+
+<script>
+export default {
+  methods: {
+    handleLogout() {
+      localStorage.removeItem('access_token');
+      this.$router.push('/');
+    }
+  }
+}
+</script>
