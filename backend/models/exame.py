@@ -7,14 +7,10 @@ class Exame(db.Model):
     inicio = db.Column(db.DateTime, nullable=False)
     fim = db.Column(db.DateTime)
     estado = db.Column(db.String(50), nullable=False, default='agendado')
-    professor_id = db.Column(db.Integer,
-                             db.ForeignKey('user.userId'),
-                             nullable=False)
+    professor_id = db.Column(
+        db.Integer, db.ForeignKey('user.userId'), nullable=False)
     questoes = db.relationship('Question', backref='exame', lazy=True)
     respostas = db.relationship('Resposta', backref='exame', lazy=True)
-    professor = db.relationship('User',
-                                backref=db.backref('exames', lazy=True),
-                                overlaps="exames,professor")
 
     def serialize(self):
         return {

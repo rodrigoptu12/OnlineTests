@@ -9,13 +9,8 @@ class User(db.Model):
     registration = db.Column(db.Integer, nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
     is_teacher = db.Column(db.Boolean, default=False)
-    assigned_exames = db.relationship('Exame',
-                                      backref=db.backref('assigned_professor',
-                                                         lazy=True),
-                                      primaryjoin="User.userId == "
-                                      "Exame.professor_id",
-                                      overlaps="exames,professor")
-
+    assigned_exames = db.relationship(
+        'Exame', backref='assigned_professor', primaryjoin="User.userId == Exame.professor_id")
 
     def serialize(self):
         return {
@@ -24,8 +19,7 @@ class User(db.Model):
             'email': self.email,
             'registration': self.registration,
             'is_teacher': self.is_teacher,
-            'assigned_exames': [exame.serialize()
-                                for exame in self.assigned_exames]
+            'assigned_exames': [exame.serialize() for exame in self.assigned_exames]
         }
 
     @property
