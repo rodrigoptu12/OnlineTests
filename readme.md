@@ -49,7 +49,6 @@ Certifique-se de ter um servidor de banco de dados postgreSQL (pode criá-lo pel
 
         flask run
 
-## Configuração backend
 
 
 
@@ -74,5 +73,5 @@ Certifique-se de ter um servidor de banco de dados postgreSQL (pode criá-lo pel
 
 ### Observações:
 
-Ao criar a conta, crie uma senha de no mínimo 8 caracteres e matrícula de 9 dígitos. Caso ao clicar em criar conta, não seja redirecionado para outra tela, mude manualmente para a de login.
+Ao criar a conta, crie uma senha de no mínimo 8 caracteres e matrícula de 9 dígitos. Caso ao clicar em criar conta, não seja redirecionado para outra tela, mude manualmente para a de login. O mesmo acontece quando se cria uma questão, e depois no exame, ao clicar em criar exame, não for redirecionado para a tela de exames, mude manualmente para a tela de exames.
    

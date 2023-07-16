@@ -7,3 +7,14 @@ Flask-RESTful
 psycopg2
 Flask-Cors
 flask_cors
+markupsafe
+click
+itsdangerous
+Jinja2
+sqlalchemy
+aniso8601
+pytz
+six
+blinker
+typing_extensions
+flask_jwt_extended  
