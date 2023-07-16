@@ -19,25 +19,39 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu ambiente de dese
 
         cd backend
 
-2.  Instale as dependências do projeto:
+2.  Crie um ambiente virtual para o seu projeto.  
 
-        pip install -r requirements.txt
+        python -m venv env
 
-3. Execute o comando para iniciar a aplicação:
+3.  Ative o ambiente virtual.
+   
+   3.1.  No Windows:
 
-        flask run
+        env\Scripts\activate
 
-4. Logo apos execute o comando para popular o banco de dados:
-    
-        python3 basedata.py
+   3.2.  No macOS/Linux:
+
+        source env/bin/activate
+  
+4.  Instale as dependências do projeto:
+
+        pip install -r requirements.txt --no-dependencies
 
 5. Execute o comando para iniciar a aplicação:
 
         flask run
 
+6. Logo apos execute o comando para popular o banco de dados:
+    
+        python3 basedata.py
+
+7. Execute o comando para iniciar a aplicação:
+
+        flask run
+
 ## Configuração backend
 
-Antes de executar o sistema, é necessário configurar as informações de conexão com o banco de dados. No arquivo `.env`, localize a seção de configuração do banco de dados e preencha as informações necessárias, como nome de usuário, senha e nome do banco de dados.
+Antes de executar o sistema, é necessário configurar as informações de conexão com o banco de dados. Crie o arquivo `.env` dentro da pasta backend, e preencha as informações necessárias, como nome de usuário, senha e nome do banco de dados.
 
         SQLALCHEMY_DATABASE_URI=postgresql://user:password@host/databaseName
 
