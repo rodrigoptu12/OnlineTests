@@ -72,4 +72,7 @@ Certifique-se de ter um servidor de banco de dados postgreSQL (pode criá-lo pel
 5. Abra, no navegador, http://127.0.0.1:5173/
 
 
+### Observações:
+
+Ao criar a conta, crie uma senha de no mínimo 8 caracteres e matrícula de 9 dígitos. Caso ao clicar em criar conta, não seja redirecionado para outra tela, mude manualmente para a de login.
    
