@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 from models.resposta import Resposta
-from models import db
+from database.database import db
 
 
 class RespostaController(Resource):

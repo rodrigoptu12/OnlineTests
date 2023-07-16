@@ -4,11 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from models import Exame, Question, Item, User, Resposta
 from dotenv import load_dotenv
 import os
+from database.database import db
 
 load_dotenv()
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
-db = SQLAlchemy(app)
 
 def popular_banco_dados():
     # Popula as entidades User
@@ -42,11 +40,3 @@ def popular_banco_dados():
     # Adiciona as entidades ao banco de dados
     db.session.add_all([user1, user2, user3, exame1, exame2, exame3, question1, question2, question3, item1, item2, item3, item4, item5, item6, resposta1, resposta2, resposta3])
     db.session.commit()
-
-# Chama a função para popular o banco de dados
-
-if __name__ == '__main__':
-    # context
-    with app.app_context():
-        db.create_all()
-        popular_banco_dados()

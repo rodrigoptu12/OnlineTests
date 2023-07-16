@@ -1,5 +1,6 @@
 from flask import request
-from models import Exame, Question, db
+from models import Exame, Question
+from database.database import db
 from flask_restful import Resource
 from datetime import datetime
 from models.user import User
