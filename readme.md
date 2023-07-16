@@ -68,3 +68,8 @@ Certifique-se de ter um servidor de banco de dados postgreSQL (pode criá-lo pel
 4. Execute o comando para iniciar a aplicação:
     
         yarn dev
+
+5. Abra, no navegador, http://127.0.0.1:5173/
+
+
+   
