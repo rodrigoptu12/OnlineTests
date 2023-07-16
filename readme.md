@@ -15,7 +15,7 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu ambiente de dese
 
 ### Backend
 
-1.  Acesse o diretório do projeto:
+1.  Acesse o diretório do projeto pelo terminal:
 
         cd backend
 
@@ -54,6 +54,8 @@ Certifique-se de ter um servidor de banco de dados postgreSQL (pode criá-lo pel
 
 
 ### Frontend
+
+1.  Abra outro terminal
 
 2.  Acesse o diretório do projeto:
 
