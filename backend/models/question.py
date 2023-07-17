@@ -1,4 +1,4 @@
-from . import db
+from database.database import db
 
 
 class Question(db.Model):

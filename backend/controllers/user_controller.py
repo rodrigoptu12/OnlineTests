@@ -2,7 +2,7 @@ from flask import request, jsonify, session
 from flask_restful import Resource
 from decorators.decorators import require_login
 from models.user import User
-from models import db
+from database.database import db
 from flask import Blueprint
 from flask_cors import cross_origin
 from flask_jwt_extended import create_access_token, jwt_required

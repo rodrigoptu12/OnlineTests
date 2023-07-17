@@ -2,7 +2,7 @@ from flask import request, jsonify
 from flask_restful import Resource
 from models.question import Question
 from models.item import Item
-from models import db
+from database.database import db
 
 
 class QuestionController(Resource):
