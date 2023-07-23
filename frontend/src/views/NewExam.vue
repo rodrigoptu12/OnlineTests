@@ -171,12 +171,8 @@ import draggable from 'vuedraggable'
                       ><b>{{ element.name }}</b></span
                     >
                     <span py-8 px-4 mb-3>Valor atribuído a questão: </span>
-                    <input
-                      class="appearance-none bg-transparent border border-gray-200 focus:border-blue p-3"
-                      type="number"
-                      min="0"
-                      v-model="element.pontuacao"
-                    />
+                    <span class="list-group-item" py-8 px-4 mb-3>{{ element.value }}</span>
+                    
                     <button @click="removerQuestao(index)">Remover</button>
                   </li>
                 </ul>
@@ -298,8 +294,9 @@ export default {
         const valorSelecionado = this.selectedQuestion
         const novaQuestao = {
           name: valorSelecionado.command,
-          pontuacao: 0 // Valor inicial da pontuação
+          value: valorSelecionado.value
         }
+
         console.log(this.selectedQuestion)
         this.list.push(novaQuestao)
         this.questoes_ids.push(valorSelecionado.id)

@@ -17,9 +17,9 @@ def popular_banco_dados():
     user3 = User(name='Alice Johnson', email='alice.johnson@example.com', registration=54321, password_hash='hashed_password', is_teacher=False)
 
     # Popula as entidades Exame
-    exame1 = Exame(titulo='Exame 1', inicio=datetime.now(), professor_id=1)
-    exame2 = Exame(titulo='Exame 2', inicio=datetime.now(), professor_id=1)
-    exame3 = Exame(titulo='Exame 3', inicio=datetime.now(), professor_id=2)
+    exame1 = Exame(titulo='Exame 1', inicio=datetime.now(), fim=datetime.now(), professor_id=1)
+    exame2 = Exame(titulo='Exame 2', inicio=datetime.now(), fim=datetime.now(),professor_id=1)
+    exame3 = Exame(titulo='Exame 3', inicio=datetime.now(), fim=datetime.now(),professor_id=2)
 
     # Popula as entidades Question
     question1 = Question(command='Qual é a capital do Brasil?', answer_key='Brasília', question_type='Múltipla escolha', exame_id=1)
