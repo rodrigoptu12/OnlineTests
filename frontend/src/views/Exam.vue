@@ -131,12 +131,11 @@ export default {
       axios.post('/resposta', data)
         .then(response => {
           console.log(response)
+          this.$router.push('/exams');
         })
         .catch(error => {
           console.log(error)
         });
-
-        this.$router.push('/exams');
         
     }
   }
