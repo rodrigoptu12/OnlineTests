@@ -24,9 +24,9 @@ def popular_banco_dados():
     exame3 = Exame(titulo='Exame 3', inicio=data_hora_atual, fim=data_hora_fim, professor_id=2)
 
     # Popula as entidades Question
-    question1 = Question(command='Qual é a capital do Brasil?', answer_key='Brasília', question_type='Múltipla escolha', exame_id=1)
-    question2 = Question(command='Quem descobriu a América?', answer_key='Cristóvão Colombo', question_type='Verdadeiro ou Falso', exame_id=1)
-    question3 = Question(command='Quanto é 2 + 2?', answer_key='4', question_type='Resposta curta', exame_id=1)
+    question1 = Question(command='Qual é a capital do Brasil?', answer_key='Brasília', question_type='Múltipla escolha', exame_id=1, value=2)
+    question2 = Question(command='Quem descobriu a América?', answer_key='Cristóvão Colombo', question_type='Verdadeiro ou Falso', exame_id=1, value=1)
+    question3 = Question(command='Quanto é 2 + 2?', answer_key='4', question_type='Resposta curta', exame_id=1, value=3)
 
     # Popula as entidades Item
     item1 = Item(text='A) Rio de Janeiro', question_id=1)
