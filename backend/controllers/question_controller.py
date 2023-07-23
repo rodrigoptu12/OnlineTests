@@ -52,24 +52,25 @@ class QuestionController(Resource):
         # Transform the SQLAlchemy objects into dictionaries
         list_of_questions = []
         for question in questions:
-            question_dict = {
-                'id':
-                question.id,
-                'command':
-                question.command,
-                'answer_key':
-                question.answer_key,
-                'question_type':
-                question.question_type,
-                'exame_id':
-                question.exame_id,
-                'items': [{
-                    'id': item.id,
-                    'text': item.text
-                } for item in question.items],
-                'value': question.value
-            }
-            list_of_questions.append(question_dict)
+            if question.exame_id is None:
+                question_dict = {
+                    'id':
+                    question.id,
+                    'command':
+                    question.command,
+                    'answer_key':
+                    question.answer_key,
+                    'question_type':
+                    question.question_type,
+                    'exame_id':
+                    question.exame_id,
+                    'items': [{
+                        'id': item.id,
+                        'text': item.text
+                    } for item in question.items],
+                    'value': question.value
+                }
+                list_of_questions.append(question_dict)
 
         # Return the data as a JSON
         return jsonify(list_of_questions)

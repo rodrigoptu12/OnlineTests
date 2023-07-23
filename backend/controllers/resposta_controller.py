@@ -1,6 +1,9 @@
-from flask import request
+from flask import request, jsonify
 from flask_restful import Resource
 from models.resposta import Resposta
+from models.exame import Exame
+from models.question import Question
+from datetime import datetime
 from database.database import db
 from flask import Blueprint
 
@@ -43,11 +46,42 @@ class RespostaController(Resource):
 
         return {'respostas': respostas_json}
     
-    @resposta_bp.route('/resposta/<int:id_exame>/<int:id_aluno>', methods=['GET'])
-    def verify_answer(id_exame, id_aluno):
-        resposta = Resposta.query.filter_by(exame_id=id_exame, aluno_id=id_aluno).first()
+    @resposta_bp.route('/resposta/<int:exame_id>/<int:aluno_id>', methods=['GET'])
+    def verify_answer(exame_id, aluno_id):
+        resposta = Resposta.query.filter_by(exame_id=exame_id, aluno_id=aluno_id).first()
 
         if resposta is not None:
             return {'resposta': True}
         else:
             return {'resposta': False}
+        
+    @resposta_bp.route('/resposta/nota/<int:exame_id>/<int:aluno_id>', methods=['GET'])
+    def calcular_nota(exame_id, aluno_id):
+        exame = Exame.query.get(exame_id)
+        
+        if not exame:
+            return jsonify({"error": "Exame não encontrado"}), 404
+
+        if exame.fim and exame.fim > datetime.utcnow():
+            return jsonify({"error": "O exame ainda não foi finalizado"}), 400
+
+        questoes = Question.query.filter_by(exame_id=exame_id).all()
+
+        respostas = Resposta.query.filter_by(exame_id=exame_id, aluno_id=aluno_id).first()
+
+        if not respostas:
+            return jsonify({"error": "Respostas do aluno não encontradas"}), 404
+
+        respostas_aluno = respostas.respostas
+
+        nota_total = 0
+        for questao in questoes:
+            questao_id = questao.id
+            resposta_aluno = next((resposta['resposta'] for resposta in respostas_aluno if resposta['id'] == str(questao_id)), None)
+            if resposta_aluno is not None:
+                resposta_correta = questao.answer_key
+                if resposta_aluno == resposta_correta:
+                    nota_total += questao.value
+
+        return jsonify({"nota": nota_total})
+
