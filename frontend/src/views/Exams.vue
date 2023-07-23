@@ -147,7 +147,7 @@ export default {
       const dataInicioExame = new Date(exame.inicio);
       const dataFimExame = new Date(exame.fim);
 
-      if (dataHoraAtual >= dataInicioExame && dataHoraAtual <= dataFimExame) {
+      if (dataHoraAtual <= dataInicioExame) {
         this.examMensagem = 'Não aberto'
       }
       else if (dataHoraAtual >= dataFimExame) {
