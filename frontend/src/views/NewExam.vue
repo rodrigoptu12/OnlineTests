@@ -261,11 +261,14 @@ export default {
       questions: [],
       titulo: '',
       inicio: '',
-      fim: ''
+      fim: '',
+      userId: ''
     }
   },
   mounted() {
     this.fetchQuestions();
+    const userId = localStorage.getItem('userId');
+    this.userId = userId;
   },
   created() {
       this.verificarLogin();
@@ -322,20 +325,19 @@ export default {
 
         const data = {
           titulo: this.titulo,
-          professor_id: 1,
+          professor_id: this.userId,
           inicio: this.inicio,
           fim: this.fim,
           questoes: this.questoes_ids,
           estado: 'agendado'
         };
-      
-      console.log(data);
 
       axios.post('/exame', data)
-        .then(response => {
-          console.log(response)
+        .then(() => {
+          window.location.reload();
         })
         .catch(error => {
+          console.log(data)
           console.log(error)
         });
 

@@ -35,11 +35,13 @@ const mobileMenuOpen = ref(false)
       <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto ml-20">
         <div class="text-sm lg:flex-grow">
           <a
+            v-if="isTeacher"
             href="/new-exam"
             class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
             >Criar exames</a
           >
           <a
+            v-if="isTeacher"
             href="new-question"
             class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
             >Questões</a
@@ -48,11 +50,6 @@ const mobileMenuOpen = ref(false)
             href="exams"
             class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
             >Exames</a
-          >
-          <a
-            href="exam"
-            class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-white mr-4 text-sm font-semibold leading-6 text-blue dark:text-blue"
-            >Exame</a
           >
         </div>
       </div>
@@ -71,6 +68,17 @@ const mobileMenuOpen = ref(false)
 
 <script>
 export default {
+  name: 'navBar',
+  data() {
+    return {
+      isTeacher: false, 
+    };
+  },
+  mounted() {
+    const isTeacher = localStorage.getItem('isTeacher');
+
+    this.isTeacher = isTeacher === 'true';
+  },
   methods: {
     handleLogout() {
       localStorage.removeItem('access_token');

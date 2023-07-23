@@ -53,13 +53,15 @@ import Navbar from '../components/Navbar.vue'
                         {{ exame.professor }}
                         </td>
                         <td class="px-6 py-4">
-                        {{ exame.inicio }}
+                        {{ formatarData(exame.inicio) }}
                         </td>
                         <td class="px-6 py-4">
-                        {{ exame.fim }}
+                        {{ formatarData(exame.fim) }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                        <button @click="editarExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</button>
+                          <button v-if="isTeacher" @click="editarExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</button>
+                          <button v-else-if="podeFazerExame(exame)" @click="fazerExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Fazer</button>
+                          <span v-else class="font-medium text-white-600 dark:text-white-500">{{ this.examMensagem }}</span>
                         </td>
                     </tr>
                     </tbody>
@@ -97,6 +99,7 @@ import Navbar from '../components/Navbar.vue'
 
 <script>
 import axios from 'axios'
+import { format } from 'date-fns';
 
 const API_URL = 'http://127.0.0.1:5000'
 
@@ -107,9 +110,14 @@ axios.defaults.headers.common['Access-Control-Allow-Headers'] =
   'Origin, X-Requested-With, Content-Type, Accept'
 
 export default {
+  name: 'examsView',
   data() {
     return {
-      exams: ''
+      exams: '',
+      isTeacher: false, 
+      userId: '',
+      examMensagem: '',
+      alunosEncontrados: {}
     }
   },
   created() {
@@ -118,11 +126,37 @@ export default {
   },
   mounted() {
     this.fetchExams()
+
+    const isTeacher = localStorage.getItem('isTeacher');
+    this.isTeacher = isTeacher === 'true';
+
+    const userId = localStorage.getItem('userId');
+    this.userId = userId;
   },
   methods: {
+    podeFazerExame(exame) {
+      const dataHoraAtual = new Date();
+
+      const dataInicioExame = new Date(exame.inicio);
+      const dataFimExame = new Date(exame.fim);
+
+      if (dataHoraAtual >= dataInicioExame && dataHoraAtual <= dataFimExame) {
+        this.examMensagem = 'Não aberto'
+      }
+      else if (dataHoraAtual >= dataFimExame) {
+        this.examMensagem = 'Fechado'
+      }
+      if (this.alunosEncontrados[exame.id]) {
+        this.examMensagem = 'Exame respondido'
+      }
+
+      return dataHoraAtual >= dataInicioExame && dataHoraAtual <= dataFimExame && !this.isTeacher && !this.alunosEncontrados[exame.id];
+    },
     onChangeTipo() {
-      // Limpar campos extras quando o tipo é alterado
       this.camposExtras = []
+    },
+    fazerExame(id) {
+      this.$router.push(`exam/${id}/${this.userId}`)
     },
     async verificarLogin() {
       const token = localStorage.getItem('access_token')
@@ -141,11 +175,26 @@ export default {
         this.$router.push('/')
       }
     },
+    formatarData(dateTimeStr) {
+      const dateTime = new Date(dateTimeStr);
+      return format(dateTime, 'dd/MM/yyyy HH:mm');
+    },
     async fetchExams() {
       try {
         const response = await axios.get('/exame')
-        console.log(response)
         this.exams = response.data
+
+        for (const exame of this.exams) {
+          if (!(this.userId in this.alunosEncontrados && this.alunosEncontrados[this.userId][exame.id] !== undefined)) {
+            try {
+              const resposta = await axios.get(`/resposta/${exame.id}/${this.userId}`);
+              this.alunosEncontrados[exame.id] =  resposta.data.resposta;
+              console.log(this.alunosEncontrados)
+            } catch (error) {
+              console.error('Erro ao buscar a resposta do exame: ', error);
+            }
+          }
+        }
       } catch (error) {
         console.error('Error fetching questions:', error)
       }

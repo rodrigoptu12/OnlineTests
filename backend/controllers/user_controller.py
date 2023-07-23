@@ -56,7 +56,6 @@ class UserController(Resource):
         password = data.get('password')
         confirm_password = data.get('confirm_password')
         registration = data.get('registration')
-        is_teacher = data.get('is_teacher', False)
 
         if not name:
             return jsonify({'error': 'Name is required'}), 400
@@ -85,7 +84,7 @@ class UserController(Resource):
                             'are diferrent'}), 400
 
         user = User(name=name, email=email, password=password,
-                    registration=registration, is_teacher=is_teacher)
+                    registration=registration, is_teacher=False)
 
         db.session.add(user)
         db.session.commit()
@@ -179,13 +178,13 @@ class UserController(Resource):
         if not user or not user.verify_password(password):
             return jsonify({'error': 'Invalid email or password'}), 401
 
-        session.permanent = True
+        session.permanent = True 
 
         session['user_id'] = user.userId
 
         access_token = create_access_token(identity=user.userId)
 
-        return jsonify(access_token=access_token), 200
+        return jsonify(access_token=access_token, is_teacher=user.is_teacher, userId=user.userId), 200
 
     @staticmethod
     @user_bp.route('/logout', methods=['POST'])
