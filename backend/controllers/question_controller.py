@@ -16,6 +16,7 @@ class QuestionController(Resource):
             command=data['command'],
             answer_key=data['answer_key'],
             question_type=data['question_type'],
+            value=data['value'],
         )
         # adiciona a nova questão na sessão do banco de dados
         db.session.add(new_question)
@@ -37,7 +38,8 @@ class QuestionController(Resource):
                 'text': i.text
             } for i in question.items],
             'answer_key': question.answer_key,
-            'question_type': question.question_type
+            'question_type': question.question_type,
+            'value': question.value
         }
 
         # retorna a questão e seus itens como JSON
@@ -64,7 +66,8 @@ class QuestionController(Resource):
                 'items': [{
                     'id': item.id,
                     'text': item.text
-                } for item in question.items]
+                } for item in question.items],
+                'value': question.value
             }
             list_of_questions.append(question_dict)
 

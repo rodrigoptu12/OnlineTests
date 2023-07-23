@@ -8,3 +8,4 @@ class Question(db.Model):
     question_type = db.Column(db.String(100), nullable=False)
     exame_id = db.Column(db.Integer, db.ForeignKey('exame.id'))  # FK
     items = db.relationship('Item', backref='question', lazy=True)
+    value = db.Column(db.Integer, nullable=False)

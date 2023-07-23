@@ -12,6 +12,16 @@
             "username": "rodri",
             "password": "rodri",
             "name": "EngSoft"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "database": "engsoft",
+            "username": "rodri",
+            "password": "rodri",
+            "name": "rod"
         }
     ]
 }

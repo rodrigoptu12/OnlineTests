@@ -39,6 +39,23 @@ import Navbar from '../components/Navbar.vue'
             />
             <!--<p class="text-red-500 text-xs italic">Por favor, preencha este campo.</p>-->
           </div>
+          <!-- valor da quesão -->
+          <div class="w-full px-3">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-value-value"
+            >
+              Valor da questão
+            </label>
+            <input
+              class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
+              id="grid-value-value"
+              type="text"
+              placeholder="Digite aqui o valor da questão..."
+              v-model="value"
+            />
+
+          </div>
           <div class="w-full px-3">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -247,6 +264,7 @@ export default {
       if (this.response1) {
         data = {
           command: this.command,
+          value: this.value,
           answer_key: this.answer_key,
           question_type: this.selectedTipo,
           items: [{ text: this.response1 }, { text: this.response2 }]
@@ -254,6 +272,7 @@ export default {
       } else if (this.inputs) {
         data = {
           command: this.command,
+          value: this.value,
           answer_key: this.answer_key,
           question_type: this.selectedTipo,
           items: this.inputs
@@ -261,6 +280,7 @@ export default {
       } else {
         data = {
           command: this.command,
+          value: this.value,
           answer_key: this.answer_key,
           question_type: this.selectedTipo
         }
