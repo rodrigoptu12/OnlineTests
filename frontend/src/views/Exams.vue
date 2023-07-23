@@ -59,7 +59,8 @@ import Navbar from '../components/Navbar.vue'
                         {{ exame.fim }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                        <button @click="editarExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</button>
+                        <button v-if="isTeacher" @click="editarExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</button>
+                        <button v-if="!isTeacher" @click="fazerExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Fazer</button>
                         </td>
                     </tr>
                     </tbody>
@@ -107,9 +108,12 @@ axios.defaults.headers.common['Access-Control-Allow-Headers'] =
   'Origin, X-Requested-With, Content-Type, Accept'
 
 export default {
+  name: 'examsView',
   data() {
     return {
-      exams: ''
+      exams: '',
+      isTeacher: false, 
+      userId: ''
     }
   },
   created() {
@@ -118,11 +122,20 @@ export default {
   },
   mounted() {
     this.fetchExams()
+
+    const isTeacher = localStorage.getItem('isTeacher');
+    this.isTeacher = isTeacher === 'true';
+
+    const userId = localStorage.getItem('userId');
+    this.userId = userId;
   },
   methods: {
     onChangeTipo() {
       // Limpar campos extras quando o tipo é alterado
       this.camposExtras = []
+    },
+    fazerExame(id) {
+      this.$router.push(`exam/${id}/${this.userId}`)
     },
     async verificarLogin() {
       const token = localStorage.getItem('access_token')

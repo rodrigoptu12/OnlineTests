@@ -85,12 +85,6 @@
               required
             />
           </div>
-          <div class="mb-6">
-            <input type="checkbox" id="isTeacher" v-model="isTeacher" class="mr-2" />
-            <label for="isTeacher" class="text-sm text-gray-900 dark:text-white">
-              É professor?
-            </label>
-          </div>
           <button
             type="submit"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -195,6 +189,13 @@ export default {
       isTeacher: false
     }
   },
+  mounted() {
+    const storedisTeacher = localStorage.getItem('isTeacher');
+
+    if (storedisTeacher !== null) {
+      this.isAdmin = storedisTeacher === 'true';
+    }
+  },
   methods: {
     toggleForm() {
       this.showSignup = !this.showSignup
@@ -213,7 +214,11 @@ export default {
           console.log(response)
           if (response.status === 200) {
             localStorage.setItem('access_token', response.data.access_token)
-            this.$router.push('/new-question')
+            localStorage.setItem('userId', response.data.userId);
+            this.isTeacher = response.data.is_teacher;
+            localStorage.setItem('isTeacher', response.data.is_teacher);
+            this.$router.push('/exams')
+            console.log(response.data)
           }
         })
         .catch((error) => {
@@ -228,8 +233,7 @@ export default {
         password: this.password,
         confirm_password: this.confirm_password,
         registration: this.registration,
-        name: this.name,
-        isTeacher: this.isTeacher
+        name: this.name
       }
 
       axios

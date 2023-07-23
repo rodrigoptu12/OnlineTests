@@ -65,6 +65,7 @@ axios.defaults.headers.common['Access-Control-Allow-Headers'] =
   'Origin, X-Requested-With, Content-Type, Accept'
 
 export default {
+  name: 'examView',
   data() {
     return {
       questoes: [],
@@ -84,7 +85,7 @@ export default {
       try {
         const response = await axios.get('/me', {
           headers: {
-            Authorization: `Bearer ${token}` // Envie o token JWT no cabeçalho de autorização
+            Authorization: `Bearer ${token}`
           }
         })
         if (response.status !== 200) {
@@ -98,7 +99,6 @@ export default {
 
     async fetchExam() {
       let id = this.$route.params.id
-      id = 7
       try {
         const response = await axios.get(`/exame/${id}`)
         if (response.status === 200) {
@@ -113,8 +113,8 @@ export default {
     enviarRespostas(event) {
         event.preventDefault();
       // const id_aluno = this.$route.params.id
-      const id_aluno = 1
-      const id = 7
+      const id_aluno = this.$route.params.userId
+      const id = this.$route.params.id
       const respostas = []
       for (const [key, value] of Object.entries(this.respostas)) {
         respostas.push({

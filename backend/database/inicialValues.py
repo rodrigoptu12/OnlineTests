@@ -1,23 +1,27 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from models import Exame, Question, Item, User, Resposta
 from dotenv import load_dotenv
 import os
 from database.database import db
+from werkzeug.security import generate_password_hash
 
 load_dotenv()
 
 def popular_banco_dados():
+    data_hora_atual = datetime.now()
+    data_hora_fim = data_hora_atual + timedelta(hours=2)
+
     # Popula as entidades User
-    user1 = User(name='John Doe', email='john.doe@example.com', registration=12345, password_hash='hashed_password', is_teacher=True)
-    user2 = User(name='Jane Smith', email='jane.smith@example.com', registration=67890, password_hash='hashed_password', is_teacher=True)
-    user3 = User(name='Alice Johnson', email='alice.johnson@example.com', registration=54321, password_hash='hashed_password', is_teacher=False)
+    user1 = User(name='John Doe', email='john.doe@example.com', registration=12345, password_hash=generate_password_hash('12345678'), is_teacher=True)
+    user2 = User(name='Jane Smith', email='jane.smith@example.com', registration=67890, password_hash=generate_password_hash('12345678'), is_teacher=True)
+    user3 = User(name='Alice Johnson', email='alice.johnson@example.com', registration=54321, password_hash=generate_password_hash('12345678'), is_teacher=False)
 
     # Popula as entidades Exame
-    exame1 = Exame(titulo='Exame 1', inicio=datetime.now(), professor_id=1)
-    exame2 = Exame(titulo='Exame 2', inicio=datetime.now(), professor_id=1)
-    exame3 = Exame(titulo='Exame 3', inicio=datetime.now(), professor_id=2)
+    exame1 = Exame(titulo='Exame 1', inicio=data_hora_atual, fim=data_hora_fim,  professor_id=1)
+    exame2 = Exame(titulo='Exame 2', inicio=data_hora_atual, fim=data_hora_fim,  professor_id=1)
+    exame3 = Exame(titulo='Exame 3', inicio=data_hora_atual, fim=data_hora_fim, professor_id=2)
 
     # Popula as entidades Question
     question1 = Question(command='Qual é a capital do Brasil?', answer_key='Brasília', question_type='Múltipla escolha', exame_id=1)
