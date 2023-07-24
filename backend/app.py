@@ -27,7 +27,7 @@ first_request = True
 api = Api(app)  # 'app' é a sua instância do aplicativo Flask
 api.add_resource(QuestionController, '/questions')
 
-api.add_resource(ExameController, '/exame', '/exame/<int:exame_id>/<int:aluno_id>')
+api.add_resource(ExameController, '/exame', '/exame/<int:exame_id>', '/exame/<int:exame_id>/<int:aluno_id>')
 app.register_blueprint(user_bp)
 app.register_blueprint(resposta_bp)
 

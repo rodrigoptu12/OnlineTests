@@ -10,6 +10,7 @@ class ExameController(Resource):
 
     def get(self, exame_id=None, aluno_id=None):
         data_hora_atual = datetime.now()
+        questoes_json = []
 
         if exame_id:
             exame = Exame.query.get(exame_id)
@@ -32,9 +33,10 @@ class ExameController(Resource):
                             questao.answer_key,
                         }
                         questoes_json.append(questao_data)
+            if questoes_json:
                 return questoes_json, 200
             else:
-                return {'message': 'Exame não encontrado'}, 404
+                return {'message': 'Nenhum exame encontrado ou não está disponível para responder'}, 404
         else:
             exames = Exame.query.all()
             exames_json = []
