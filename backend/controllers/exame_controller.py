@@ -10,6 +10,7 @@ class ExameController(Resource):
 
     def get(self, exame_id=None, aluno_id=None):
         data_hora_atual = datetime.now()
+        questoes_json = []
 
         if exame_id:
             exame = Exame.query.get(exame_id)
@@ -32,9 +33,10 @@ class ExameController(Resource):
                             questao.answer_key,
                         }
                         questoes_json.append(questao_data)
+            if questoes_json:
                 return questoes_json, 200
             else:
-                return {'message': 'Exame não encontrado'}, 404
+                return {'message': 'Nenhum exame encontrado ou não está disponível para responder'}, 404
         else:
             exames = Exame.query.all()
             exames_json = []
@@ -99,5 +101,53 @@ class ExameController(Resource):
                     'message':
                     'Alguma(s) questão(ões) não foi(ram) encontrada(s)'
                 }, 404
+        else:
+            return {'message': 'Dados inválidos'}, 400
+
+    def patch(self, exame_id):
+        data = request.get_json()
+
+        titulo = data.get('titulo')
+        questoes_ids = data.get('questoes')
+        professor_id = data.get('professor_id')
+        inicio = data.get('inicio')
+        fim = data.get('fim')
+        estado = data.get('estado')
+
+        if titulo and questoes_ids and professor_id and inicio and fim and estado:
+            # Converter a data de início e fim de string para objeto datetime
+            inicio_sem_t = inicio.replace('T', ' ')
+            inicio = datetime.strptime(inicio_sem_t, '%Y-%m-%d %H:%M')
+
+            fim_sem_t = fim.replace('T', ' ')
+            fim = datetime.strptime(fim_sem_t, '%Y-%m-%d %H:%M')
+
+            exame = Exame.query.get(exame_id)
+
+            if exame:
+                exame.titulo = titulo
+                exame.professor_id = professor_id
+                exame.inicio = inicio
+                exame.fim = fim
+                exame.estado = estado
+
+                # Buscar as questões existentes pelo ID no banco de dados
+                questoes = Question.query.filter(
+                    Question.id.in_(questoes_ids)).all()
+
+                if questoes:
+                    exame.questoes = questoes
+
+                    # Salvar o exame no banco de dados
+                    db.session.commit()
+
+                    return {'message': 'Exame atualizado com sucesso!'}, 200
+                else:
+                    return {
+                        'message':
+                        'Alguma(s) questão(ões) não foi(ram) encontrada(s)'
+                    }, 404
+            else:
+                return {'message': 'Exame não encontrado'}, 404
         else:
             return {'message': 'Dados inválidos'}, 400
