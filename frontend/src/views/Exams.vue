@@ -40,27 +40,33 @@ import Navbar from '../components/Navbar.vue'
                             <b>Fim</b>
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            <b>Nota</b>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             <b><span class="sr-only">Editar</span></b>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="exame in exams" :key="exame.id">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white center-text">
                         {{ exame.titulo }}
                         </th>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 center-text">
                         {{ exame.professor }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 center-text">
                         {{ formatarData(exame.inicio) }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 center-text">
                         {{ formatarData(exame.fim) }}
+                        </td>
+                        <td class="px-6 py-4 center-text" >
+                          {{ notas[exame.id] }}
                         </td>
                         <td class="px-6 py-4 text-right">
                           <button v-if="isTeacher" @click="editarExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</button>
-                          <button v-else-if="podeFazerExame(exame)" @click="fazerExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Fazer</button>
+                          <button v-else-if="podeFazerExame(exame)" @click="fazerExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Responder</button>
                           <span v-else class="font-medium text-white-600 dark:text-white-500">{{ this.examMensagem }}</span>
                         </td>
                     </tr>
@@ -117,7 +123,8 @@ export default {
       isTeacher: false, 
       userId: '',
       examMensagem: '',
-      alunosEncontrados: {}
+      alunosEncontrados: {},
+      notas: {}
     }
   },
   created() {
@@ -140,7 +147,7 @@ export default {
       const dataInicioExame = new Date(exame.inicio);
       const dataFimExame = new Date(exame.fim);
 
-      if (dataHoraAtual >= dataInicioExame && dataHoraAtual <= dataFimExame) {
+      if (dataHoraAtual <= dataInicioExame) {
         this.examMensagem = 'Não aberto'
       }
       else if (dataHoraAtual >= dataFimExame) {
@@ -185,14 +192,30 @@ export default {
         this.exams = response.data
 
         for (const exame of this.exams) {
-          if (!(this.userId in this.alunosEncontrados && this.alunosEncontrados[this.userId][exame.id] !== undefined)) {
+          if (!(exame.id in this.alunosEncontrados && this.alunosEncontrados[exame.id] !== undefined)) {
             try {
               const resposta = await axios.get(`/resposta/${exame.id}/${this.userId}`);
               this.alunosEncontrados[exame.id] =  resposta.data.resposta;
-              console.log(this.alunosEncontrados)
             } catch (error) {
               console.error('Erro ao buscar a resposta do exame: ', error);
             }
+          }
+
+          const dataHoraAtual = new Date();
+          const dataFimExame = new Date(exame.fim);
+
+          if (dataHoraAtual >= dataFimExame && this.alunosEncontrados[exame.id] && this.alunosEncontrados[exame.id] !== undefined && !(exame.id in this.notas && this.notas[exame.id] !== undefined)) {
+            try {
+              const resposta = await axios.get(`/resposta/nota/${exame.id}/${this.userId}`);
+
+              this.notas[exame.id] = resposta.data.nota;
+            
+            } catch (error) {
+              console.error('Erro ao buscar a resposta do exame: ', error);
+            }
+          }
+          else {
+            this.notas[exame.id] = "-";
           }
         }
       } catch (error) {

@@ -18,7 +18,7 @@ import Navbar from '../components/Navbar.vue'
               <input
                 type="radio"
                 :name="`questao-${questao.id}`"
-                :value="opcao.id"
+                :value="opcao.text"
                 v-model="respostas[questao.id]"
                 class="text-black"
               />
@@ -112,7 +112,6 @@ export default {
 
     enviarRespostas(event) {
         event.preventDefault();
-      // const id_aluno = this.$route.params.id
       const id_aluno = this.$route.params.userId
       const id = this.$route.params.id
       const respostas = []

@@ -61,13 +61,13 @@ import Navbar from '../components/Navbar.vue'
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="grid-answer-key"
             >
-              Chave da resposta
+              Resposta
             </label>
             <input
               class="appearance-none block w-full bg-transparent text-grey border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-transparent focus:text-blue focus:border-blue"
               id="grid-answer-key"
               type="text"
-              placeholder="Digite aqui a chave resposta da questão..."
+              placeholder="Digite aqui a resposta da questão..."
               v-model="answer_key"
             />
           </div>
