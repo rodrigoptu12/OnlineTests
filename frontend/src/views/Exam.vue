@@ -18,7 +18,7 @@ import Navbar from '../components/Navbar.vue'
               <input
                 type="radio"
                 :name="`questao-${questao.id}`"
-                :value="opcao.id"
+                :value="opcao.text"
                 v-model="respostas[questao.id]"
                 class="text-black"
               />
@@ -99,8 +99,9 @@ export default {
 
     async fetchExam() {
       let id = this.$route.params.id
+      const id_aluno = this.$route.params.userId
       try {
-        const response = await axios.get(`/exame/${id}`)
+        const response = await axios.get(`/exame/${id}/${id_aluno}`)
         if (response.status === 200) {
           this.questoes = response.data
           console.log(response.data)
@@ -112,7 +113,6 @@ export default {
 
     enviarRespostas(event) {
         event.preventDefault();
-      // const id_aluno = this.$route.params.id
       const id_aluno = this.$route.params.userId
       const id = this.$route.params.id
       const respostas = []
@@ -131,12 +131,11 @@ export default {
       axios.post('/resposta', data)
         .then(response => {
           console.log(response)
+          this.$router.push('/exams');
         })
         .catch(error => {
           console.log(error)
         });
-
-        this.$router.push('/exams');
         
     }
   }

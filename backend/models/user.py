@@ -28,7 +28,7 @@ class User(db.Model):
 
     @password.setter
     def password(self, password):
-        if len(password) < 8:
+        if len(password) < 1:
             raise ValueError('Password must be at least 8 characters long.')
         self.password_hash = generate_password_hash(password)
 

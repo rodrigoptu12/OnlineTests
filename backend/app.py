@@ -2,8 +2,8 @@ from flask import Flask
 from flask_restful import Api
 from controllers.question_controller import QuestionController
 from controllers.user_controller import user_bp
+from controllers.resposta_controller import resposta_bp
 from controllers.exame_controller import ExameController
-from controllers.resposta_controller import RespostaController
 from sqlalchemy import inspect, text
 from dotenv import load_dotenv
 from database.database import db
@@ -27,9 +27,9 @@ first_request = True
 api = Api(app)  # 'app' é a sua instância do aplicativo Flask
 api.add_resource(QuestionController, '/questions')
 
-api.add_resource(ExameController, '/exame', '/exame/<int:exame_id>')
-api.add_resource(RespostaController, '/resposta', '/resposta/<int:id_exame>')
+api.add_resource(ExameController, '/exame', '/exame/<int:exame_id>/<int:aluno_id>')
 app.register_blueprint(user_bp)
+app.register_blueprint(resposta_bp)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'SQLALCHEMY_DATABASE_URI')

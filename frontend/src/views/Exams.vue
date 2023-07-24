@@ -40,27 +40,34 @@ import Navbar from '../components/Navbar.vue'
                             <b>Fim</b>
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            <b>Nota</b>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             <b><span class="sr-only">Editar</span></b>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="exame in exams" :key="exame.id">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white center-text">
                         {{ exame.titulo }}
                         </th>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 center-text">
                         {{ exame.professor }}
                         </td>
-                        <td class="px-6 py-4">
-                        {{ exame.inicio }}
+                        <td class="px-6 py-4 center-text">
+                        {{ formatarData(exame.inicio) }}
                         </td>
-                        <td class="px-6 py-4">
-                        {{ exame.fim }}
+                        <td class="px-6 py-4 center-text">
+                        {{ formatarData(exame.fim) }}
+                        </td>
+                        <td class="px-6 py-4 center-text" >
+                          {{ notas[exame.id] }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                        <button v-if="isTeacher" @click="editarExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</button>
-                        <button v-if="!isTeacher" @click="fazerExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Fazer</button>
+                          <button v-if="isTeacher" @click="editarExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</button>
+                          <button v-else-if="podeFazerExame(exame)" @click="fazerExame(exame.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Responder</button>
+                          <span v-else class="font-medium text-white-600 dark:text-white-500">{{ this.examMensagem }}</span>
                         </td>
                     </tr>
                     </tbody>
@@ -98,6 +105,7 @@ import Navbar from '../components/Navbar.vue'
 
 <script>
 import axios from 'axios'
+import { format } from 'date-fns';
 
 const API_URL = 'http://127.0.0.1:5000'
 
@@ -113,7 +121,10 @@ export default {
     return {
       exams: '',
       isTeacher: false, 
-      userId: ''
+      userId: '',
+      examMensagem: '',
+      alunosEncontrados: {},
+      notas: {}
     }
   },
   created() {
@@ -130,8 +141,16 @@ export default {
     this.userId = userId;
   },
   methods: {
+    podeFazerExame(exame) {
+      this.examMensagem = exame.estado
+
+      if (this.alunosEncontrados[exame.id]) {
+        this.examMensagem = 'Exame respondido'
+      }
+
+      return exame.estado === 'Em andamento' && !this.isTeacher && !this.alunosEncontrados[exame.id];
+    },
     onChangeTipo() {
-      // Limpar campos extras quando o tipo é alterado
       this.camposExtras = []
     },
     fazerExame(id) {
@@ -154,11 +173,39 @@ export default {
         this.$router.push('/')
       }
     },
+    formatarData(dateTimeStr) {
+      const dateTime = new Date(dateTimeStr);
+      return format(dateTime, 'dd/MM/yyyy HH:mm');
+    },
     async fetchExams() {
       try {
         const response = await axios.get('/exame')
-        console.log(response)
         this.exams = response.data
+
+        for (const exame of this.exams) {
+          if (!(exame.id in this.alunosEncontrados && this.alunosEncontrados[exame.id] !== undefined)) {
+            try {
+              const resposta = await axios.get(`/resposta/${exame.id}/${this.userId}`);
+              this.alunosEncontrados[exame.id] =  resposta.data.resposta;
+            } catch (error) {
+              console.error('Erro ao buscar a resposta do exame: ', error);
+            }
+          }
+
+          if (exame.estado === 'Finalizado' && this.alunosEncontrados[exame.id] && this.alunosEncontrados[exame.id] !== undefined && !(exame.id in this.notas && this.notas[exame.id] !== undefined)) {
+            try {
+              const resposta = await axios.get(`/resposta/nota/${exame.id}/${this.userId}`);
+
+              this.notas[exame.id] = resposta.data.nota;
+            
+            } catch (error) {
+              console.error('Erro ao buscar a resposta do exame: ', error);
+            }
+          }
+          else {
+            this.notas[exame.id] = "-";
+          }
+        }
       } catch (error) {
         console.error('Error fetching questions:', error)
       }
