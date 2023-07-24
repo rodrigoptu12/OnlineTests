@@ -142,22 +142,13 @@ export default {
   },
   methods: {
     podeFazerExame(exame) {
-      const dataHoraAtual = new Date();
+      this.examMensagem = exame.estado
 
-      const dataInicioExame = new Date(exame.inicio);
-      const dataFimExame = new Date(exame.fim);
-
-      if (dataHoraAtual <= dataInicioExame) {
-        this.examMensagem = 'Não aberto'
-      }
-      else if (dataHoraAtual >= dataFimExame) {
-        this.examMensagem = 'Fechado'
-      }
       if (this.alunosEncontrados[exame.id]) {
         this.examMensagem = 'Exame respondido'
       }
 
-      return dataHoraAtual >= dataInicioExame && dataHoraAtual <= dataFimExame && !this.isTeacher && !this.alunosEncontrados[exame.id];
+      return exame.estado === 'Em andamento' && !this.isTeacher && !this.alunosEncontrados[exame.id];
     },
     onChangeTipo() {
       this.camposExtras = []
@@ -201,10 +192,7 @@ export default {
             }
           }
 
-          const dataHoraAtual = new Date();
-          const dataFimExame = new Date(exame.fim);
-
-          if (dataHoraAtual >= dataFimExame && this.alunosEncontrados[exame.id] && this.alunosEncontrados[exame.id] !== undefined && !(exame.id in this.notas && this.notas[exame.id] !== undefined)) {
+          if (exame.estado === 'Finalizado' && this.alunosEncontrados[exame.id] && this.alunosEncontrados[exame.id] !== undefined && !(exame.id in this.notas && this.notas[exame.id] !== undefined)) {
             try {
               const resposta = await axios.get(`/resposta/nota/${exame.id}/${this.userId}`);
 

@@ -9,6 +9,8 @@ from models.user import User
 class ExameController(Resource):
 
     def get(self, exame_id=None):
+        data_hora_atual = datetime.now()
+
         if exame_id:
             exame = Exame.query.get(exame_id)
             if exame:
@@ -40,10 +42,18 @@ class ExameController(Resource):
                     'titulo': exame.titulo,
                     'inicio': exame.inicio.strftime("%Y-%m-%d %H:%M:%S"),
                     'fim': exame.fim.strftime("%Y-%m-%d %H:%M:%S"),
-                    'estado': exame.estado,
+                    'estado': '',
                     'professor': User.query.filter_by(userId=exame.professor_id).first().name,
                 }
+                if exame.inicio <= data_hora_atual <= exame.fim:
+                    exame_data['estado'] = 'Em andamento'
+                elif data_hora_atual < exame.inicio:
+                    exame_data['estado'] = 'Não aberto'
+                else:
+                    exame_data['estado'] = 'Finalizado'
+
                 exames_json.append(exame_data)
+
             return exames_json, 200
 
     def post(self):
