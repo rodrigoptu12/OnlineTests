@@ -99,8 +99,9 @@ export default {
 
     async fetchExam() {
       let id = this.$route.params.id
+      const id_aluno = this.$route.params.userId
       try {
-        const response = await axios.get(`/exame/${id}`)
+        const response = await axios.get(`/exame/${id}/${id_aluno}`)
         if (response.status === 200) {
           this.questoes = response.data
           console.log(response.data)

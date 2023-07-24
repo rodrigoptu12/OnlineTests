@@ -1,5 +1,5 @@
 from flask import request
-from models import Exame, Question
+from models import Exame, Question, Resposta
 from database.database import db
 from flask_restful import Resource
 from datetime import datetime
@@ -8,28 +8,30 @@ from models.user import User
 
 class ExameController(Resource):
 
-    def get(self, exame_id=None):
+    def get(self, exame_id=None, aluno_id=None):
         data_hora_atual = datetime.now()
 
         if exame_id:
             exame = Exame.query.get(exame_id)
+            respostas = Resposta.query.filter_by(exame_id=exame_id, aluno_id=aluno_id).first()
             if exame:
-                questoes = exame.questoes
-                questoes_json = []
-                for questao in questoes:
-                    questao_data = {
-                        'id':
-                        questao.id,
-                        'titulo':
-                        questao.command,
-                        'items': [{
-                            'id': i.id,
-                            'text': i.text
-                        } for i in questao.items],
-                        'answer_key':
-                        questao.answer_key,
-                    }
-                    questoes_json.append(questao_data)
+                if exame.inicio <= data_hora_atual <= exame.fim and not respostas:
+                    questoes = exame.questoes
+                    questoes_json = []
+                    for questao in questoes:
+                        questao_data = {
+                            'id':
+                            questao.id,
+                            'titulo':
+                            questao.command,
+                            'items': [{
+                                'id': i.id,
+                                'text': i.text
+                            } for i in questao.items],
+                            'answer_key':
+                            questao.answer_key,
+                        }
+                        questoes_json.append(questao_data)
                 return questoes_json, 200
             else:
                 return {'message': 'Exame não encontrado'}, 404
