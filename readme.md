@@ -23,7 +23,7 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu ambiente de dese
 
         python -m venv env
 
-3.  Ative o ambiente virtual.
+3.  Ative o ambiente virtual:
    
    3.1.  No Windows:
 
