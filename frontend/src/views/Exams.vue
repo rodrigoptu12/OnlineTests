@@ -162,7 +162,11 @@ export default {
       } catch (error) {
         console.error('Error fetching questions:', error)
       }
+    },
+    async editarExame(id) {
+      this.$router.push(`exam/${id}`)
     }
+
   }
 }
 </script>
